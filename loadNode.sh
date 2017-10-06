@@ -22,3 +22,4 @@ echo 'PATH="${PATH}:/opt/nodejs/bin"' >> ~/.profile
 echo 'export PATH' >> ~/.profile
 apt-get install mongo
 apt-get install libcurl4-openssl-dev
+npm install -g nodemon
