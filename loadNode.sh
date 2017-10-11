@@ -17,9 +17,9 @@ rm -fr /usr/bin/node 2>/dev/null
 rm -fr /usr/bin/npm 2>/dev/null
 ln -s /opt/nodejs/bin/node /usr/bin/node
 ln -s /opt/nodejs/bin/npm /usr/bin/npm
-echo 'PATH="${PATH}:/opt/nodejs"' >> ~/.profile
-echo 'PATH="${PATH}:/opt/nodejs/bin"' >> ~/.profile
-echo 'export PATH' >> ~/.profile
+echo 'PATH="${PATH}:/opt/nodejs"' >> /etc/profile
+echo 'PATH="${PATH}:/opt/nodejs/bin"' >> /etc/profile
+echo 'export PATH' >> /etc/profile
 apt-get install mongo
 apt-get install libcurl4-openssl-dev
 npm install -g nodemon
