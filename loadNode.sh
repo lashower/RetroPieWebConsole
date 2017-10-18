@@ -6,7 +6,7 @@ apt-get install nodejs
 echo "#####################################"
 echo "## Adding application dependencies ##"
 echo "#####################################"
-apt-get -y install mongodb gcc make libssl-dev libcurl4-openssl-dev
+apt-get -y install mongodb gcc make libssl-dev libcurl4-openssl-dev vim
 
 echo "########################"
 echo "## Installing pm2 ##"
