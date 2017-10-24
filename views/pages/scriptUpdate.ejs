@@ -1,0 +1,27 @@
+<div data-ng-controller="ScriptUpdateController">
+    <section id="showcase">
+        <div class="container">
+            <h1>Script Update</h1>
+            <p>This update the RetroPie-Setup script.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <input type="checkbox" ng-model="sure">I am sure I want to update the RetroPie-Setup script</input><br /> 
+                <button ng-model="button" ng-disabled="!sure" data-ng-click="runUpdate()">Run Update</button>
+            </div>
+        </div> 
+        <div class="panel panel-default">
+            <div class="panel-heading">Results</div>
+            <div class="panel-body">
+                <p><label>Success:</label> <span ng-class="{'list-group-item-success':results.success,'list-group-item-danger':!results.success}">
+                    {{results.success}}</span></p>
+                <p><label>Directory:</label> {{results.dir}}</p>
+                <p><label>GIT:</label> {{results.url}}</p>
+                <p><label>Branch:</label> {{results.branch}}</p>
+            </div>
+        </div>
+    </div>
+</div>

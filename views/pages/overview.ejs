@@ -1,0 +1,19 @@
+<section id="showcase">
+    <div class="container">
+        <h1>Welcome</h1>
+        <p>Welcome to the initial release of the RetroPie Web Console for use in updating and configuring RetroPie.</p>
+    </div>
+    <div class="container">
+       <div class="panel panel-default">
+            <div class="panel-heading">Environment Settings</div>
+            <div class="panel-body">
+                <p><label>User:</label> {{userDetails.user}}</p>
+                <p><label>Rom Directory</label> <span ng-class="{'list-group-item-success':userDetails.exists,'list-group-item-danger':!userDetails.exists}">
+                    {{userDetails.romDir}}</span></p>
+                <p><label>RetroPie-Setup Version:</label> {{userDetails.rpsVersion}}</p>
+                <p><label>RetroArch Home:</label> {{userDetails.retroArchHome}}</p>
+            </div>
+        </div>
+    </div>
+</section>
+

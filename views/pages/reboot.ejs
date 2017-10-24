@@ -1,0 +1,25 @@
+<div data-ng-controller="ScriptUpdateController">
+    <section id="showcase">
+        <div class="container">
+            <h1>Perform Reboot</h1>
+            <p>This will restart your Computer.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <input type="checkbox" ng-model="sure">I am sure I want to Reboot my Computer.</input><br /> 
+                <button ng-model="button" ng-disabled="!sure" data-ng-click="performReboot(false)">Perform Reboot</button>
+                <button ng-model="button" ng-disabled="!sure" data-ng-click="cancelReboot()">Cancel Reboot</button>
+            </div>
+        </div> 
+        <div class="panel panel-default">
+            <div class="panel-heading">Results</div>
+            <div class="panel-body">
+                <p><label>Code:</label> {{result.code}}</p>
+                <p><label>Details:</label> {{result.stderr}} {{result.stdout}}</span>
+            </div>
+        </div>
+    </div>
+</div>
