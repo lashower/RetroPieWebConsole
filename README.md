@@ -24,6 +24,8 @@ cd ~
 mkdir -p nodejs
 cd nodejs
 git clone https://github.com/lashower/RetroPieWebConsole.git
+cd ~/nodejs/RetroPieWebConsole
+npm install
 ```
 
 ### Start the application
