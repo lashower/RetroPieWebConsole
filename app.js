@@ -10,6 +10,8 @@ app.use(timeout(1800000));
 
 RetroPieHelper.init().then(RetroPieHelper.updateCache)
 
+setInterval(RetroPieHelper.updateCache,300000);
+
 cron.schedule('5 * * * *', function(){
       console.log('running a task every minute');
       RetroPieHelper.updateCache();
