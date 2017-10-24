@@ -50,7 +50,7 @@ First you have to get your ip address. Here is a simple command to get it
 ip addr show wlan0 | grep -Po "inet \K[\d.]+"
 ```
 Once you have that ip address, open a browser and go to this url:
-http://<ipaddress>:3000/
+http://{ipaddress}:3000/
 
 ### Execute a basic install
 From the main page, select Basic Install from the top.
