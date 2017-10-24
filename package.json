@@ -1,0 +1,42 @@
+{
+  "name": "retropie",
+  "version": "1.0.0",
+  "description": "A user interface for installing RetroPie",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "author": "Lucas Showerman",
+  "license": "ISC",
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.7",
+    "angular": "^1.6.6",
+    "angular-animate": "^1.6.6",
+    "angular-aria": "^1.6.6",
+    "angular-material": "^1.1.5",
+    "angular-messages": "^1.6.6",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "child-process-promise": "^2.2.1",
+    "child_process": "^1.0.2",
+    "connect-timeout": "^1.9.0",
+    "cookie-parser": "^1.4.3",
+    "dateformat": "^3.0.2",
+    "debug": "^3.0.1",
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "fs-extra": "^4.0.2",
+    "mongoose": "^4.11.12",
+    "morgan": "^1.8.2",
+    "ng-file-upload": "^12.2.13",
+    "node-cron": "^1.2.1",
+    "promise-queue": "^2.2.3",
+    "readline": "^1.3.0",
+    "serve-favicon": "^2.4.4",
+    "simple-git": "^1.80.1",
+    "sys": "0.0.1",
+    "util": "^0.10.3",
+    "vow": "^0.4.17",
+    "winston": "^2.4.0"
+  }
+}
