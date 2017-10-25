@@ -1,0 +1,34 @@
+<md-dialog aria-label="{{item.name}} {{item.command}}" style="max-width: 80%;max-height: 80%;width: 80%;height: 80%;border-radius: 0;">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{item.name}} {{item.command}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+            X
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <p><label>Package:</label> {{item.name}}</p>
+        <p><label>Command:</label> {{item.command}}</p>
+        <p><label>Priority:</label> {{item.priority}}</p>
+        <p><label>State:</label> {{item.state}}</p>
+        <p><label>Added Date:</label> {{item.added_date | date: 'medium'}}</p>
+        <p><label>Start Date:</label> {{item.start_date | date: 'medium'}}</p>
+        <p><label>End Date:</label> {{item.end_date | date: 'medium'}}</p>
+      </div>
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">Output</div>
+                <div class="panel-body">
+                    <textarea ng-model="item.output" style="margin:auto;width:100%;height:300px;"></textarea>
+                </div>
+            </div>
+        </div
+    </md-dialog-content>
+
+  </form>
+</md-dialog>

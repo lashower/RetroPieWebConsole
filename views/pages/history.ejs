@@ -1,0 +1,19 @@
+<section id="showcase">
+    <div class="container">
+        <h1>Queue</h1>
+        <p>On this page you can view items in the Queue or the history of executed items.</p>
+    </div>
+    <div class="container">
+       <div class="panel panel-default">
+            <div class="panel-heading">Environment Settings</div>
+            <div class="panel-body">
+                <p><label>User:</label> {{userDetails.user}}</p>
+                <p><label>Rom Directory</label> <span ng-class="{'list-group-item-success':userDetails.exists,'list-group-item-danger':!userDetails.exists}">
+                    {{userDetails.romDir}}</span></p>
+                <p><label>RetroPie-Setup Version:</label> {{userDetails.rpsVersion}}</p>
+                <p><label>RetroArch Home:</label> {{userDetails.retroArchHome}}</p>
+            </div>
+        </div>
+    </div>
+</section>
+

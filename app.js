@@ -45,6 +45,10 @@ app.get('/', function(req,res) {
     console.log("Test");
 });
 
+app.get('/detail.tmpl.html',function(req,res) {
+    res.render('partials/detailtmpl');
+});
+
 app.get('/scriptUpdate',function(req,res) {
     console.log("Getting Script Update");
     res.render('pages/scriptUpdate');

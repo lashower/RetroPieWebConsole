@@ -1,4 +1,4 @@
-app.controller('ManageController', function($scope, $http, $rootScope, $timeout, $interval) {
+app.controller('ManageController', function($scope, $http, $rootScope, $timeout, $interval, $mdDialog) {
         
         $scope.appTypes = [];
         $scope.filter = {installed:'all',selected:'all'};
@@ -17,6 +17,24 @@ app.controller('ManageController', function($scope, $http, $rootScope, $timeout,
           return arr.reduce(function (flat, toFlatten) {
             return flat.concat(Array.isArray(toFlatten) ? $scope.flatten(toFlatten) : toFlatten);
           }, []);
+        }
+
+        $scope.showDetails = function(ev,curritem) {
+            console.log(curritem);
+            $mdDialog.show({
+                locals: {item:curritem},
+                controller: DialogController,
+                templateUrl: '/detail.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: true
+            })
+            .then(function(answer) {
+                $scope.status = 'You said the information was "' + answer + '".';
+            }, function() {
+                $scope.status = 'You cancelled the dialog.';
+            });
         }
 
         $scope.setArrays = function() {
@@ -43,21 +61,6 @@ app.controller('ManageController', function($scope, $http, $rootScope, $timeout,
         $scope.runCommand = function(comm) {
             console.log(comm);
             var apps=$scope.searchedList.filter(function (app) { return app.selected });
-            /*var exec=$scope.executions.filter(function(exec) { return exec.name == comm});
-            if(exec.length > 0)
-            {
-                exec = exec[0];
-                exec.totalCount = apps.length;
-                exec.completed = 0;
-                exec.items = [];
-            } else
-            {
-                exec = {name:comm};
-                exec.totalCount = apps.length;
-                exec.completed = 0;
-                $scope.executions.push(exec);
-                exec.items = [];
-            }*/
             apps.forEach(function (app) {
                 if(app.selected)
                 {
@@ -164,6 +167,22 @@ app.controller('ManageController', function($scope, $http, $rootScope, $timeout,
                 //console.log(response.data);
             });
 
+        }
+
+        function DialogController($scope, $mdDialog, item) {
+            $scope.item = item;
+
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+
+            $scope.cancel = function() {
+               $mdDialog.cancel();
+            };
+
+           $scope.answer = function(answer) {
+              $mdDialog.hide(answer);
+           };
         }
 
         $scope.loadApps();

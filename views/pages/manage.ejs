@@ -43,21 +43,33 @@
                 <input class="form-control" type="number" ng-model="priority" id="priority" />
                 <button type="button" data-ng-click="runCommand('fullInstall')">Full Install/Update</button>
                 <button style="margin-right:5px;text-transform: capitalize;" data-ng-repeat="func in mainFunctions" type="button" data-ng-click="runCommand(func)">{{ func }}</button>
-                <p></p>
-                <div data-ng-repeat="exec in executions">
-                    <label style="text-transform: capitalize;">{{exec.name}} {{exec.completed}}/{{exec.totalCount}}</label>
-                    <md-progress-linear id="install" md-mode="determinate" value="{{exec.completed/exec.totalCount*100}}"></md-progress-linear>
-                    <label>Completed</label>
-                    <ul class="list-inline">
-                        <li 
-                            class="list-group-item" ng-repeat="item in exec.items" 
-                            ng-class="{'list-group-item-success':item.success == true,'list-group-item-info':item.state=='queued','list-group-item-danger':item.success == false}">
-                                {{item.name}}
-                        </li>
-                    </ul>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-href="#collapse1">Results</a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="collapse in">
+                    <div class="panel-body">
+                        <div data-ng-repeat="exec in executions">
+                            <label style="text-transform: capitalize;">{{exec.name}} {{exec.completed}}/{{exec.totalCount}}</label>
+                            <md-progress-linear id="install" md-mode="determinate" value="{{exec.completed/exec.totalCount*100}}"></md-progress-linear>
+                            <label>Completed</label>
+                            <ul class="list-inline">
+                                <li class="list-group-item" ng-repeat="item in exec.items" ng-click="showDetails($event,item)"
+                                    ng-class="{'list-group-item-success':item.success == true,'list-group-item-info':item.state=='queued','list-group-item-danger':item.success == false}">
+                                        {{item.name}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+            
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
