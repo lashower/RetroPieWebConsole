@@ -13,44 +13,23 @@ Raspberry Pis allow the ability to swap Operating Systems by switching SD cards.
 ## Initial Setup
 
 Run these commands either through ssh or through terminal
-### Install NodeJS
+### Install RetroPie Web Console
 ```
-curl -sL https://raw.githubusercontent.com/lashower/RetroPieWebConsole/master/loadNode.sh | sudo -E bash -
-```
-
-### Download the application
-```
-cd ~
-mkdir -p nodejs
-cd nodejs
-git clone https://github.com/lashower/RetroPieWebConsole.git
-cd ~/nodejs/RetroPieWebConsole
-npm install
-```
-
-### Start the application
-```
-cd ~/nodejs/RetroPieWebConsole
-sudo pm2 start app.js 
-```
-
-### Make the application start on reboot
-```
-crontab -e
-```
-Add in this line to the bottom:
-```
-@reboot cd /home/pi/nodejs/RetroPieWebConsole;sudo pm2 start app.js
+curl -sL https://raw.githubusercontent.com/lashower/RetroPieWebConsole/master/install.sh | bash -
 ```
 
 ## The Web console
 ### Open the main page
-First you have to get your ip address. Here is a simple command to get it
+At the end of the install, it provides you with the full URL. EX:
 ```
-ip addr show wlan0 | grep -Po "inet \K[\d.]+"
+##########################################################
+#                                                        #
+# The Web Console is available at http://10.0.0.##:3000/ #
+#                                                        #
+##########################################################
 ```
-Once you have that ip address, open a browser and go to this url:
-http://{ipaddress}:3000/
+
+I suggest you bookmark that URL for later use.
 
 ### Execute a basic install
 From the main page, select Basic Install from the top.
@@ -60,3 +39,6 @@ Click the button.
 ### Execute other installs
 If you want to do more than basic installs, select the Manage Packages section.
 From there you can search and select which packages you want to install.
+
+## More Details
+For more details and screenshots, check out the wiki.
