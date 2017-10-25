@@ -12,7 +12,7 @@ sudo -u $SUDO_USER git clone https://github.com/lashower/RetroPieWebConsole.git
 cd $USER_HOME/nodejs/RetroPieWebConsole
 sudo -u $SUDO_USER npm install
 cd $USER_HOME/nodejs/RetroPieWebConsole
-pm2 start app.js
+pm2 start app.js -f --name="RetroPieWebConsole"
 pm2 startup
 pm2 save
 
