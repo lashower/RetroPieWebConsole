@@ -12,8 +12,8 @@ cd $HOME/nodejs/RetroPieWebConsole
 npm install
 cd $HOME/nodejs/RetroPieWebConsole
 sudo pm2 start app.js -f --name="RetroPieWebConsole"
-pm2 startup
-pm2 save
+sudo pm2 startup
+sudo pm2 save
 
 IP="$(ip route get 1 | awk '{print $NF;exit}')";
 echo ""
