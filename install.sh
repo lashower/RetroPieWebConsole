@@ -8,9 +8,9 @@ cd $HOME
 mkdir -p nodejs
 cd nodejs
 git clone https://github.com/lashower/RetroPieWebConsole.git
-cd $USER_HOME/nodejs/RetroPieWebConsole
+cd $HOME/nodejs/RetroPieWebConsole
 npm install
-cd $USER_HOME/nodejs/RetroPieWebConsole
+cd $HOME/nodejs/RetroPieWebConsole
 sudo pm2 start app.js -f --name="RetroPieWebConsole"
 pm2 startup
 pm2 save
