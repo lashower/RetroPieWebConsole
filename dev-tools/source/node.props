@@ -1,0 +1,7 @@
+source /home/$(logname)/source/common.props
+nodehome="${userhome}/nodejs"
+nh="${nodehome}"
+njs="${nodehome}"
+alias rn="${userhome}/bin/nodejs/runNode.sh"
+alias monit="sudo pm2 monit"
+export nodehome

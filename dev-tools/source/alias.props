@@ -1,0 +1,15 @@
+alias tawsome='echo "lucas is awesome"'
+alias l='ls -CF'
+alias ll='ls -l'
+alias la='ls -la'
+alias lh='ls -lSh'
+alias myip='ip addr show wlan0 | grep -Po "inet \K[\d.]+"'
+alias watch='watch '
+alias tree='tree -A'
+alias mytemp='/source/logtemp.sh'
+alias untar='tar xf'
+alias ungtar='tar zxf'
+down="/home/$(logname)/Downloads"
+alias nano="nano -c"
+alias emu='emulationstation'
+alias less='less -R'

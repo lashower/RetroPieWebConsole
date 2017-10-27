@@ -1,0 +1,2 @@
+userhome="/home/$(logname)"
+source /source/alias.props
