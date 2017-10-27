@@ -33,8 +33,7 @@
                 <md-progress-linear id="install" md-mode="determinate" value="{{exec.completed/exec.totalCount*100}}"></md-progress-linear>
                 <label>Status</label>
                 <ul class="list-inline">
-                    <li
-                        class="list-group-item" ng-repeat="item in exec.items"
+                    <li class="list-group-item" ng-repeat="item in exec.items" ng-click="showDetails($event,item)"
                         ng-class="{'list-group-item-success':item.success == true,'list-group-item-info':item.state=='queued','list-group-item-danger':item.success == false}">
                             {{item.name}}
                     </li>

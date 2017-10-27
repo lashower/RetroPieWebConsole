@@ -15,6 +15,7 @@ sudo pm2 start app.js -f --name="RetroPieWebConsole"
 sudo pm2 startup
 sudo pm2 save
 
+chmod -R 777 ./installer.sh 
 IP="$(ip route get 1 | awk '{print $NF;exit}')";
 echo ""
 echo "##########################################################"

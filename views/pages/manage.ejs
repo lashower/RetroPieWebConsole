@@ -37,8 +37,8 @@
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">Actions for selected</div>
-            <div class="panel-body">
+            <div class="panel-heading" ng-Click="togglePanel('actions')">Actions for selected</div>
+            <div class="panel-body collapse in" id="actions">
                 <label for="priority">Priority</label>
                 <input class="form-control" type="number" ng-model="priority" id="priority" />
                 <button type="button" data-ng-click="runCommand('fullInstall')">Full Install/Update</button>
@@ -47,12 +47,8 @@
         </div>
         <div class="panel-group">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-href="#collapse1">Results</a>
-                    </h4>
-                </div>
-                <div id="collapse1" class="collapse in">
+                <div class="panel-heading" ng-Click="togglePanel('results')">Results</div>
+                <div id="results" class="collapse in">
                     <div class="panel-body">
                         <div data-ng-repeat="exec in executions">
                             <label style="text-transform: capitalize;">{{exec.name}} {{exec.completed}}/{{exec.totalCount}}</label>

@@ -9,7 +9,6 @@ app.controller('RebootController', function($scope, $http, $rootScope, Upload, $
             url: '/performReboot'
         }).then(function(response) {
             $scope.result = response.data;
-            console.log($scope.result);
         });
     }
 

@@ -11,7 +11,7 @@ app.controller('OverviewController', function($scope, $http, $rootScope, Upload,
             url: '/getUserDetails'
         }).then(function(response) {
             $scope.userDetails = response.data;
-            console.log($scope.userDetails);
+            //console.log($scope.userDetails);
         });
     }
     $scope.getUserDetails();

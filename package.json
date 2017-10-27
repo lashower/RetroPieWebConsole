@@ -1,7 +1,7 @@
 {
-  "name": "retropie",
+  "name": "RetropieWebConsole",
   "version": "1.0.0",
-  "description": "A user interface for installing RetroPie",
+  "description": "A user interface for installing RetroPie. Built on RetroPie-Setup",
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www"

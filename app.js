@@ -23,6 +23,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(express.static(__dirname + '/node_modules'));
 
+
 app.get('/', function(req, res) {
     res.render('pages/index');
 });
@@ -107,11 +108,11 @@ app.get('/getUserDetails', function(req,res) {
 
 app.post('/updateScripts',function(req, res) {
     console.log("Updating scripts");
-    RetroPieHelper.updateScripts().then(result => {
+    RetroPieHelper.updateScripts(req.query.webUpdate).then(result => {
         console.log('success');
         res.json(result)
     }).catch(err => {
-	console.log('failure',err);
+        console.log('failure',err);
         res.json(err)}
     );
 });

@@ -9,10 +9,11 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-body">
-                <input type="checkbox" ng-model="sure">I am sure I want to update the RetroPie-Setup script</input><br /> 
+                <input type="checkbox" ng-model="sure">I am sure I want to update the RetroPie-Setup script</input><br />
+                <input type="checkbox" ng-model="selfSure">I also want to update the RetroPie Web Console (Website will be temporarily unavailable)</input><br /> 
                 <button ng-model="button" ng-disabled="!sure" data-ng-click="runUpdate()">Run Update</button>
             </div>
-        </div> 
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">Results</div>
             <div class="panel-body">
@@ -21,6 +22,7 @@
                 <p><label>Directory:</label> {{results.dir}}</p>
                 <p><label>GIT:</label> {{results.url}}</p>
                 <p><label>Branch:</label> {{results.branch}}</p>
+                <p ng-if="selfSure"><label>Console Available:</label> {{isUp}}</p>
             </div>
         </div>
     </div>

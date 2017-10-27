@@ -13,6 +13,18 @@ app.controller('ManageController', function($scope, $http, $rootScope, $timeout,
         $scope.executions = [];
         $scope.priority = 1;
 
+        $scope.togglePanel = function(id) {
+            var pan = document.getElementById(id);
+            if(pan.classList.contains('in'))
+            {
+                pan.classList.remove('in');
+            } else
+            {
+                pan.classList.add('in');
+            }
+
+        }
+
         $scope.flatten = function(arr) {
           return arr.reduce(function (flat, toFlatten) {
             return flat.concat(Array.isArray(toFlatten) ? $scope.flatten(toFlatten) : toFlatten);
@@ -59,7 +71,7 @@ app.controller('ManageController', function($scope, $http, $rootScope, $timeout,
         }
         
         $scope.runCommand = function(comm) {
-            console.log(comm);
+            //console.log(comm);
             var apps=$scope.searchedList.filter(function (app) { return app.selected });
             apps.forEach(function (app) {
                 if(app.selected)

@@ -1,5 +1,6 @@
 app.controller('ScriptUpdateController', function($scope, $http, $rootScope, Upload, $timeout) {
     $scope.sure = false;
+    $scope.selfSure = false;
     $scope.disabled = false;
     $scope.results = {};
     $scope.runUpdate = function() {
@@ -9,10 +10,13 @@ app.controller('ScriptUpdateController', function($scope, $http, $rootScope, Upl
             transformRequest: angular.identity,
             method: 'POST',
             url: '/updateScripts',
+            params: {
+                webUpdate: $scope.selfSure
+            }
         }).then(function(response) {
             $scope.disabled = false;
             $scope.results = response.data;
-            console.log(response);
+            //console.log(response);
         });
     }
 });
