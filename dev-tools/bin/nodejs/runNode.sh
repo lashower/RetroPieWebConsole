@@ -6,6 +6,6 @@ if [ ! -z "${2}" ];then
 fi
 echo "${usr}"
 cd ${nodehome}/${rec}
-sudo -u $usr pm2 start app.js
+sudo -u $usr pm2 start app.js --name="${rec}"
 cd $currDir
 
