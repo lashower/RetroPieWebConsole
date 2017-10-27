@@ -120,7 +120,7 @@ root
 │ RetroPieWebConsole │ 0  │ fork │ 29308 │ online  │ 0       │ 0s     │ 66% │ 11.7 MB   │ root │ disabled │
 │ app                │ 1  │ fork │ 0     │ stopped │ 0       │ 0      │ 0%  │ 0 B       │ root │ disabled │
 └────────────────────┴────┴──────┴───────┴─────────┴─────────┴────────┴─────┴───────────┴──────┴──────────┘
- Use `pm2 show <id|name>` to get more details about an app
+Use `pm2 show <id|name>` to get more details about an app
 ```
 
 #### monit
