@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const RetroPieHelper = require('./lib/RetroPieHelper');
+const Monitor = require('./lib/Monitor');
 const RomUtil = require('./lib/RomUtil');
 const cron = require('node-cron');
 const logger = require('winston');
@@ -13,7 +14,7 @@ RetroPieHelper.init().then(RetroPieHelper.updateCache)
 setInterval(RetroPieHelper.updateCache,300000);
 
 cron.schedule('5 * * * *', function(){
-      console.log('running a task every minute');
+      logger.debug('Running updateCache every 5 minutes');
       RetroPieHelper.updateCache();
 });
 
@@ -33,6 +34,11 @@ app.get('/overview', function(req, res) {
     res.render('pages/overview');
 });
 
+app.get('/history', function(req, res) {
+    console.log("Loading history");
+    res.render('pages/history');
+});
+
 app.get('/manage', function(req, res) {
     console.log("Loading manage");
     res.render('pages/manage');
@@ -41,6 +47,10 @@ app.get('/manage', function(req, res) {
 app.get('/basic', function(req,res) {
     res.render('pages/basic');
 });
+
+app.get('/monitor', function(req,res) {
+    res.render('pages/monitor');
+})
 
 app.get('/', function(req,res) {
     console.log("Test");
@@ -78,7 +88,7 @@ app.post('/execute', function(req, res) {
         //logger.debug('app.execute','success',result);
         res.json(result);
     }).catch(result => {
-        logger.warning('app.execute','failure',result);
+        //logger.warning('app.execute','failure',result);
         res.json(result);
     });
 });
@@ -117,11 +127,31 @@ app.post('/updateScripts',function(req, res) {
     );
 });
 
-app.get('/que',function(req,res) {
-    RetroPieHelper.getQue().then(result => {
+app.post('/killPid',function(req,res) {
+    RetroPieHelper.killPid(req.query.pid).then(result => {
         res.json(result);
     }).catch(err => {
         res.json(err);
+    });
+});
+
+app.get('/que',function(req,res) {
+    RetroPieHelper.getQue(req.query).then(result => {
+        res.json(result);
+    }).catch(err => {
+        res.json(err);
+    });
+});
+
+app.get('/processStats',function(req,res) {
+    Monitor.getStats().then(result => {
+        result.success = true;
+        res.json(result);
+    }).catch(err => {
+        result = {};
+        result.success = false;
+        result.err = err;
+        res.json(result);
     });
 });
 

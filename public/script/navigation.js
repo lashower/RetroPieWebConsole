@@ -33,11 +33,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller : 'RebootController',
         templateUrl : 'reboot'
     }
+
+    var historyState = {
+        name: 'history',
+        url : '/history',
+        controller:'HistoryController',
+        templateUrl : 'history'
+    }
     
+    var monitorState = {
+        name: 'monitor',
+        url : '/monitor',
+        controller:'MonitorController',
+        templateUrl : 'monitor'
+    }
+
 	$stateProvider.state(overviewState);
 	$stateProvider.state(manageState);
 	$stateProvider.state(basicState);
 	$stateProvider.state(sUpdateState);
 	$stateProvider.state(rebootState);
+    $stateProvider.state(historyState);
+    $stateProvider.state(monitorState);
 	$urlRouterProvider.otherwise('/overview')
 });

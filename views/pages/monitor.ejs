@@ -1,0 +1,127 @@
+<section id="showcase">
+    <div class="container">
+        <h1>Monitor</h1>
+        <p>From this page you can monitor your application usage.</p>
+    </div>
+    <div class="container">
+       <div class="panel panel-default">
+            <div class="panel-heading">Settings</div>
+            <div class="panel-body">
+                <label for="refreshInterval">Refresh Interval (seconds)</label>
+                <input type="number" class="form-control" id="refreshInterval" ng-model="refreshInterval" ng-blur="updateInterval()" />
+            </div>
+       </div>
+       <div class="panel panel-default">
+            <div class="panel-heading">CPU Stats</div>
+            <div class="panel-body">
+                <div style="height:200px;width:400px;">
+                <canvas id="line" class="chart chart-line" chart-data="data"
+                    chart-labels="labels" chart-series="series" chart-options="options"
+                    chart-dataset-override="datasetOverride" chart-click="onClick">
+                </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Memory Stats</div>
+            <div class="panel-body">
+                <div style="width:200px;float:left">
+                    <canvas id="pie" class="chart chart-pie"
+                        chart-data="memData" 
+                        chart-labels="memLabels" 
+                        chart-options="memOptions">
+                    </canvas>
+                </div>
+                <div style="margin-left:10px;margin-top:40px;width:200px;float:left">
+                    <div><label>Total:</label> {{detail.memory.total | number : 0 }} MB</div>
+                    <div><label>Free:</label> {{detail.memory.free | number: 0 }} MB</div>
+                    <div><label>Used:</label> {{detail.memory.used | number: 0}} MB</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Temperatures</div>
+            <div class="panel-body">
+                <div style="width:400px;float:left">
+                    <canvas id="bar" class="chart chart-bar"
+                        chart-data="tempData" chart-labels="tempLabels" chart-series="series" chart-options="tempOptions">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">File System</div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td>Device</td>
+                            <td>Mount</td>
+                            <td>Used</td>
+                            <td>Free</td>
+                            <td>Total</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="fs in detail.fileSystems">
+                            <td>{{fs.fileSystem}}</td>
+                            <td>{{fs.mountedOn}}</td>
+                            <td>{{fs.used}}</td>
+                            <td>{{fs.available}}</td>
+                            <td>{{fs.size}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Application Stats</div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Name</td>
+                            <td>CPU</td>
+                            <td>Command</td>
+                            <td>PID</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="pid in detail.pids">
+                            <td><a style="cursor:pointer" ng-click="killPID(pid.pid)">Kill</a></td>
+                            <td>{{pid.name}}</td>
+                            <td>{{pid.cpu}}%</td>
+                            <td>{{pid.cmd}}</td>
+                            <td>{{pid.pid}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Bluetooth Devices</div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td>Address</td>
+                            <td>Name</td>
+                            <td>Company</td>
+                            <td>Manufacturer</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="bd in detail.btDevices">
+                            <td>{{bd.bdAddress}}</td>
+                            <td>{{bd.name}}</td>
+                            <td>{{bd.company}}</td>
+                            <td>{{bd.manufacturer}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+

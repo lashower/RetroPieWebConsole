@@ -1,19 +1,98 @@
-<section id="showcase">
-    <div class="container">
-        <h1>Queue</h1>
-        <p>On this page you can view items in the Queue or the history of executed items.</p>
-    </div>
-    <div class="container">
-       <div class="panel panel-default">
-            <div class="panel-heading">Environment Settings</div>
-            <div class="panel-body">
-                <p><label>User:</label> {{userDetails.user}}</p>
-                <p><label>Rom Directory</label> <span ng-class="{'list-group-item-success':userDetails.exists,'list-group-item-danger':!userDetails.exists}">
-                    {{userDetails.romDir}}</span></p>
-                <p><label>RetroPie-Setup Version:</label> {{userDetails.rpsVersion}}</p>
-                <p><label>RetroArch Home:</label> {{userDetails.retroArchHome}}</p>
-            </div>
+<div data-ng-controller="HistoryController">
+    <section id="showcase">
+        <div class="container">
+            <h1>Manage Packages</h1>
+            <p>This shows a history of things you have executed or will execute.</p>
         </div>
-    </div>
-</section>
+    </section>
 
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">Filters</div>
+            <div class="panel-body">
+                <label>Status:</label>
+                <div class="checkbox-inline" ng-repeat="state in filter.states">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="{{state.name}}" ng-model="state.selected">{{state.name}}
+                    </label>
+                </div><br />
+                <label for="priority">Priority:</label>
+                <div class="checkbox-inline" ng-repeat="pr in filter.priorities">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="{{pr.name}}" ng-model="pr.selected">{{pr.name}}
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="appName">Name:</label>
+                    <input class="form-control" ng-model="filter.name" id="appName" />
+                </div>
+                <div>
+                    <label for="minDate">Minimum Date:</label>
+                    <input 
+                        type="datetime-local" id="minDate" 
+                    name="input" ng-model="filter.minDate" 
+                    placeholder="yyyy-MM-ddTHH:mm:ss" /> 
+                </div>
+                <div>
+                    <label for="maxDate">Maximum Date:</label>
+                    <input
+                        type="datetime-local" id="maxDate"
+                    name="input" ng-model="filter.maxDate"
+                    placeholder="yyyy-MM-ddTHH:mm:ss" />
+                </div>
+
+                <div>
+                    <label>Selected:</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="all">All</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="are">Selected</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="not">Not Selected</label>
+                </div>
+            </div>
+            <button type="button" data-ng-click="search()">Search</button> 
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td>
+                        <input id="checkAll" type="checkbox" data-ng-click="setSelected($event)" />
+                    </td>
+                    <td>
+                        <a style="cursor:pointer" ng-click="sortType = 'name';sortReverse = !sortReverse">
+                            Name
+                        </a>
+                    </td>
+                    <td>
+                        <a style="cursor:pointer" ng-click="sortType = 'command';sortReverse = !sortReverse">
+                            Command
+                        </a>
+                    </td>
+                    <td>
+                        <a style="cursor:pointer" ng-click="sortType = 'priority';sortReverse = !sortReverse">
+                            Priority
+                        </a>
+                    </td>
+                    <td>
+                        <a style="cursor:pointer" ng-click="sortType = 'state';sortReverse = !sortReverse">
+                            State
+                        </a>
+                    </td>
+                    <td>
+                        <a style="cursor:pointer" ng-click="sortType = 'added_date';sortReverse = !sortReverse">
+                            Added Date
+                        </a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="exec in execs">
+                    <td><input type="checkbox" ng-model="exec.selected" /></td>
+                    <td><a style="cursor:pointer" ng-click="showDetails($event,exec)">{{ exec.name }}</a></td>
+                    <td>{{ exec.command }} {{ app.modType }}</td>
+                    <td>{{ exec.priority }}</td>
+                    <td>{{ exec.state }}</td>
+                    <td>{{ exec.added_date | date: 'medium' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
