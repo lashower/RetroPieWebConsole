@@ -160,5 +160,13 @@ app.post('/performReboot',function(req, res) {
     RetroPieHelper.performReboot(req.query).then(result => {res.json(result)}).catch(err => {res.json(err)});
 });
 
+app.post('/updateExec',function(req,res) {
+    RetroPieHelper.updateExec(req.query.details,req.query.exec).then(result => {
+        res.json(result);
+    }).catch(err => {
+        res.json(err);
+    });
+});
+
 app.listen(3000);
 logger.debug('3000 is the magic port');

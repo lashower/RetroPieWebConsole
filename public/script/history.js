@@ -97,11 +97,17 @@ app.controller('HistoryController', function($scope, $http, $rootScope, $timeout
                     specific: myFilter
                 }
             }).then(function(response) {
-                $scope.execs = response.data.items;
+                $scope.execs = response.data.items.map((item) => {
+                    item.end_date = (item.end_date == null) ? null : new Date(item.end_date);
+                    item.added_date = (item.added_date == null) ? null : new Date(item.added_date);
+                    item.start_date = (item.start_date == null) ? null : new Date(item.start_date);
+                    return item;
+                });
+                console.log($scope.execs);
             });
         };
 
-        function DialogController($scope, $mdDialog, item) {
+        function DialogController($scope, $http, $mdDialog, item) {
             $scope.item = item;
 
             $scope.hide = function() {
@@ -112,8 +118,25 @@ app.controller('HistoryController', function($scope, $http, $rootScope, $timeout
                $mdDialog.cancel();
             };
 
-           $scope.answer = function(answer) {
-              $mdDialog.hide(answer);
+           $scope.action = function(action) {
+              console.log(action);
+              console.log(item);
+              if(action != 'cancel')
+              {
+                  $http({
+                      transformRequest: angular.identity,
+                      method: 'POST',
+                      url: '/updateExec',
+                          params: {
+                              details: action,
+                              exec:item
+                          }
+                  }).then(function(response) {
+                      $scope.item = response.data;
+                      $mdDialog.hide();
+                  });
+
+              }
            };
         }
 

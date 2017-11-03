@@ -1,4 +1,4 @@
-app.controller('ManageController', function($scope, $http, $rootScope, $timeout, $interval, $mdDialog) {
+app.controller('ManageController',function($scope, $http, $rootScope, $timeout, $interval, $mdDialog) {
         
         $scope.appTypes = [];
         $scope.filter = {installed:'all',selected:'all'};
@@ -152,7 +152,12 @@ app.controller('ManageController', function($scope, $http, $rootScope, $timeout,
                 url: '/que',
                 timeout: 1800000
             }).then(function(response) {
-                var items = response.data.items;
+                var items = response.data.items.map((item) => {
+                    item.end_date = (item.end_date == null) ? null : new Date(item.end_date);
+                    item.added_date = (item.added_date == null) ? null : new Date(item.added_date);
+                    item.start_date = (item.start_date == null) ? null : new Date(item.start_date);
+                    return item;
+                });
                 $scope.executions = [];
                 items.forEach(function (exec) {
                     var cat=$scope.executions.filter(function(categ) { return categ.name == exec.command});
@@ -191,10 +196,29 @@ app.controller('ManageController', function($scope, $http, $rootScope, $timeout,
             $scope.cancel = function() {
                $mdDialog.cancel();
             };
+            
+            $scope.action = function(action) {
+                if(action != 'cancel')
+                {
+                    $http({
+                        transformRequest: angular.identity,
+                        method: 'POST',
+                        url: '/updateExec',
+                            params: {
+                                details: action,
+                                exec:item
+                            }
+                    }).then(function(response) {
+                        response.data.end_date = (response.data.end_date == null) ? null : new Date(response.data.end_date);
+                        response.data.added_date = (response.data.added_date == null) ? null : new Date(response.data.added_date);
+                        response.data.start_date = (response.data.start_date == null) ? null : new Date(response.data.start_date);
+                        $scope.item = response.data;
+                        $mdDialog.hide();
+                    });
 
-           $scope.answer = function(answer) {
-              $mdDialog.hide(answer);
-           };
+                }
+            };
+
         }
 
         $scope.loadApps();

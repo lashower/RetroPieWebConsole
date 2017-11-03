@@ -10,13 +10,39 @@
       </div>
     </md-toolbar>
 
+        <md-dialog-actions layout="row">
+            <md-button ng-show="item.state == 'queued'" ng-click="action('update')">
+                Update
+            </md-button>
+            <md-button ng-show="item.state == 'queued' || item.state == 'failed'" ng-click="action('delete')">
+                Delete
+            </md-button>
+            <md-button ng-click="action('rerun')">
+                Run again
+            </md-button>
+            <md-button ng-show="item.state == 'queued'" ng-click="action('escalate')">
+                Escalate
+            </md-button>
+
+
+        </md-dialog-actions>
+
     <md-dialog-content>
       <div class="md-dialog-content">
         <p><label>Package:</label> {{item.name}}</p>
         <p><label>Command:</label> {{item.command}}</p>
-        <p><label>Priority:</label> {{item.priority}}</p>
+        <p>
+            <label for="priority">Priority:</label>
+            <input type="number" class="form-control" id="priority" ng-model="item.priority" />
+        </p>
         <p><label>State:</label> {{item.state}}</p>
-        <p><label>Added Date:</label> {{item.added_date | date: 'medium'}}</p>
+        <p>
+            <label for="addedDate">Added Date:</label>
+            <input
+                type="datetime-local" id="minDate"
+                name="input" ng-model="item.added_date"
+                placeholder="yyyy-MM-ddTHH:mm:ss" />
+        </p>
         <p><label>Start Date:</label> {{item.start_date | date: 'medium'}}</p>
         <p><label>End Date:</label> {{item.end_date | date: 'medium'}}</p>
       </div>
