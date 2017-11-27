@@ -17,11 +17,18 @@
         <div class="panel panel-default">
             <div class="panel-heading">Results</div>
             <div class="panel-body">
-                <p><label>Success:</label> <span ng-class="{'list-group-item-success':results.success,'list-group-item-danger':!results.success}">
-                    {{results.success}}</span></p>
-                <p><label>Directory:</label> {{results.dir}}</p>
-                <p><label>GIT:</label> {{results.url}}</p>
-                <p><label>Branch:</label> {{results.branch}}</p>
+                <div class="panel panel-default" ng-repeat="result in results">
+                    <div class="panel-heading">{{result.name}}</div>
+                    <div class="panel-body">
+                        <p><label>Directory:</label> {{result.dir}}</p>
+                        <p><label>Success:</label> <span ng-class="{'list-group-item-success':result.success,'list-group-item-danger':!result.success}">
+                            {{result.success}}</span></p>
+                        <p ng-if="!result.success"<label>Error:</label>{{result.error}}</p>
+                        <p><label>GIT:</label><a target="_blank" href="{{result.url}}">{{result.url}}</a></p>
+                        <p><label>Branch:</label> {{result.branch}}</p>
+                        <p><label>Last Update:</label> {{result.date}}</p>
+                    </div>
+                </div>
                 <p ng-if="selfSure"><label>Console Available:</label> {{isUp}}</p>
             </div>
         </div>

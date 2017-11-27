@@ -1,4 +1,5 @@
 app.controller('ExecController',function($scope, $http, $mdDialog, item) {
+    console.log('loading');
     $scope.item = item;
 
     $scope.hide = function() {

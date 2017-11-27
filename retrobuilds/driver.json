@@ -1,0 +1,9 @@
+{
+    "name": "Drivers",
+    "description": "Collection of drivers used for controllers and more",
+    "commands": ["fullInstall"],
+    "emulators": [{
+        "name": "driver",
+        "type": "group"
+    }]
+}

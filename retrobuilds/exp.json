@@ -1,0 +1,9 @@
+{
+    "name": "Experimental",
+    "description": "Games, emulators, and tools that are not fully supported by RetroPie and may not install or work as expected.",
+    "commands": ["fullInstall"],
+    "emulators": [{
+        "name": "exp",
+        "type": "group"
+    }]
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Basic Install",
+    "description": "Basic install containing core and main packages",
+    "commands": ["fullInstall"],
+    "emulators": [{
+        "name": "core",
+        "type": "group"
+        }, {
+        "name": "main",
+        "type": "group"
+    }]
+}

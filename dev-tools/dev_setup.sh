@@ -1,5 +1,5 @@
 echo 'Installing vim'
-#sudo apt-get install vim
+sudo apt-get install vim
 echo 'Setting up /source/alias.props'
 sudo mkdir -p /source
 sudo cp source/alias.props /source/alias.props

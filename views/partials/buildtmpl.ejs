@@ -1,0 +1,49 @@
+<md-dialog aria-label="{{build.name}}" style="max-width: 80%;max-height: 80%;width: 80%;height: 80%;border-radius: 0;">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{build.name}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+            X
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-actions align="center">
+        <md-button ng-click="action('execute')"  layout="row">
+            Execute
+        </md-button>
+    </md-dialog-actions>
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <p><label>Build:</label> {{build.name}}</p>
+            <p><label>Description:</label> {{build.description}}</p>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Emulators</div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Type</td>
+                            <td>Description</td>
+                            <td>Installed</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="emu in build.emulators">
+                            <td>{{emu.name}}</td>
+                            <td>{{emu.type}}</td>
+                            <td>{{emu.description}}</td>
+                            <td>{{emu.installed}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </md-dialog-content>
+
+  </form>
+</md-dialog>

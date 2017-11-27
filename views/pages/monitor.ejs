@@ -7,8 +7,13 @@
        <div class="panel panel-default">
             <div class="panel-heading">Settings</div>
             <div class="panel-body">
-                <label for="refreshInterval">Refresh Interval (seconds)</label>
+                <label for="refreshInterval">Refresh Time (seconds)</label>
                 <input type="number" class="form-control" id="refreshInterval" ng-model="refreshInterval" ng-blur="updateInterval()" />
+                <div style="margin-top:10px">
+                    <button ng-model="button" data-ng-click="reboot(true)">Perform Reboot</button>
+                    <button ng-model="button" data-ng-click="reboot(false)">Cancel Reboot</button>
+                    <p style="margin-top:10px;margin-left:20px"><label>Result:</label> {{result.stderr}} {{result.stdout}}</span>
+                </div>
             </div>
        </div>
     </div>

@@ -1,0 +1,9 @@
+{
+    "name": "Optional",
+    "description": "Optional games and emulators available for RetroPie",
+    "commands": ["fullInstall"],
+    "emulators": [{
+        "name": "opt",
+        "type": "group"
+    }]
+}

@@ -1,0 +1,9 @@
+{
+    "name": "Main",
+    "description": "Main emulators for general game playing",
+    "commands": ["fullInstall"],
+    "emulators": [{
+        "name": "main",
+        "type": "group"
+    }]
+}

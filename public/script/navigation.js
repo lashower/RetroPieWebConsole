@@ -13,25 +13,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl : 'manage'
     }
 
-    var basicState = {
-        name : 'basic',
-        url : '/basic',
-        controller : 'BasicController',
-        templateUrl : 'basic'
-    }
-
     var sUpdateState = {
         name : 'scriptUpdate',
         url : '/scriptUpdate',
         controller : 'ScriptUpdateController',
         templateUrl : 'scriptUpdate'
-    }
-
-    var rebootState = {
-        name : 'reboot',
-        url : '/reboot',
-        controller : 'RebootController',
-        templateUrl : 'reboot'
     }
 
     var historyState = {
@@ -48,11 +34,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl : 'monitor'
     }
 
+    var gamesState = {
+        name: 'games',
+        url : '/games',
+        controller: 'GameController',
+        templateUrl : 'games'
+    }
+
 	$stateProvider.state(overviewState);
 	$stateProvider.state(manageState);
-	$stateProvider.state(basicState);
+    $stateProvider.state(gamesState);
 	$stateProvider.state(sUpdateState);
-	$stateProvider.state(rebootState);
     $stateProvider.state(historyState);
     $stateProvider.state(monitorState);
 	$urlRouterProvider.otherwise('/overview')

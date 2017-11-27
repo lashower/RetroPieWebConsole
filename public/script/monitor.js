@@ -1,10 +1,32 @@
 app.controller('MonitorController', function($scope, $http, $rootScope, Upload, $timeout, $interval, $mdDialog) {
+
     $scope.detail = {cpus:[],memory:{total:'loading...',free:'loading...',used:'loading...'}};
     $scope.refreshInterval = 5;
     $scope.sortType     = 'core';
     $scope.sortReverse  = false;
     $scope.tempLabels = ['CPU','GPU'];
     $scope.tempData = [0,0];
+    
+    $scope.result = {};
+    
+    $scope.reboot = function(isContinue) {
+        console.log('reboot');
+        $scope.result = {};
+        var params = {};
+        if(!isContinue) {
+            params.cancel = true;
+        }
+        $http({
+            transformRequest: angular.identity,
+            method: 'POST',
+            url: '/performReboot',
+            params: params
+        }).then(function(response) {
+            console.log(response.data);
+            $scope.result = response.data;
+        });
+    }
+
     $scope.tempOptions = {
         scales: {
             yAxes: [{id: 'y-axis-1', type: 'linear', position: 'left', ticks: {min: 0, max:80}}]
@@ -38,7 +60,6 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
         });
     };
 
-    $scope.getStats();
     var reloadStats = $interval($scope.getStats,5000);
     $scope.updateInterval = function() {
         $interval.cancel(reloadStats);
@@ -69,6 +90,9 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
             ]
         }
     };
+    var reloadStats = $interval($scope.getStats,5000);
+    $scope.getStats();
+
     $scope.$on("$destroy",function(){
         if(angular.isDefined(reloadStats)) {
             $interval.cancel(reloadStats);
@@ -78,4 +102,5 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
     $scope.memLabels = ["Free", "Used"];;
     $scope.memData = [0,0];
     $scope.memOptions = {maintainAspectRatio: false};
+
 });

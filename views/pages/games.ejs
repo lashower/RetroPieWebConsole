@@ -1,0 +1,155 @@
+<div data-ng-controller="GameController">
+    <section id="showcase">
+        <div class="container">
+            <h1>Games</h1>
+            <p>From here you can manage your games, BIOS, and cheats.</p>
+        </div>
+    </section>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading" ng-Click="togglePanel('builds')">Retro Bundles</div>
+            <div class="panel-body collapse in" id="builds">
+                Below is a list of existing application and game bundles for easy lookup.
+                <ul class="list-inline">
+                    <li class="list-group-item" ng-repeat="build in builds" ng-click="openBuild($event,build)">{{build.name}}</li>
+                </ul>
+            </div>
+        </div>
+        <!--div class="panel panel-default">
+            <div class="panel-heading" ng-Click="togglePanel('scraper')">Scraper</div>
+            <div class="panel-body collapse in" id="scraper">
+                <label>Emulators</label>
+                <div class="checkbox-inline">
+                    <label
+                      class="checkbox-inline"
+                      ng-repeat="emu in emulators">
+                        <input type="checkbox" ng-model="emu.selected"/>{{emu.name}}
+                    </label>
+                </div>
+                <div>
+                    <label><input type="checkbox" data-ng-model="scraper.local" id="local"> Run locally</label><br />
+                </div>
+                <button type="button" data-ng-click="scrape()">Scrape</button>
+            </div>
+        </div-->
+        <div class="panel panel-default">
+            <div class="panel-heading" ng-Click="togglePanel('upload')">Upload</div>
+            <div class="panel-body collapse in" id="upload">
+                <label>Emulator</label>
+                <div>
+                    <label
+                      class="radio-inline"
+                      ng-repeat="emu in emulators" ng-if="emu.name != 'All'">
+                        <input type="radio" ng-model="upload.emulator" value="{{emu.name}}">{{emu.name}}
+                    </label>
+                </div>
+                <div>
+                    <label>Type</label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="upload.type" value="game">Game
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="upload.type" value="cheat">Cheat
+                    </label>
+                </div>
+                <div ngf-drop="uploadFiles($files)" class="drop-box"
+                  ngf-drag-over-class="dragover" ngf-multiple="true"
+                  ng-if="(upload.emulator != undefined && upload.emulator != '' && upload.type != undefined && upload.type != '')">Drop Files Here</div>
+                <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" ng-Click="togglePanel('search')">Search</div>
+            <div class="panel-body collapse" id="search">
+                <label>Emulators</label>
+                <div class="checkbox-inline">
+                    <label 
+                      class="checkbox-inline" 
+                      ng-repeat="emu in emulators" 
+                      ng-if="emu.gameList.length >= options.minPlayedGames">
+                        <input type="checkbox" ng-model="emu.selected"/>{{emu.name}}
+                    </label>
+                </div>
+                <div>
+                    <label for="playedGames">Minimum Played Games (Emulators)</label>
+                    <input class="form-control" type="number" ng-model="options.minPlayedGames" id="playedGames" />
+                </div>
+                <div>
+                    <label for="playCount">Minimum Play Count (Games)</label>
+                    <input class="form-control" type="number" ng-model="options.playCount" id="playCount" />
+                </div>
+                <div>
+                    <label for="minDate">Minimum Played Date:</label>
+                    <input
+                        type="datetime-local" id="minDate"
+                        name="input" ng-model="options.minDate"
+                        placeholder="yyyy-MM-ddTHH:mm:ss" />
+                </div>
+                <div>
+                    <label><input type="checkbox" data-ng-model="options.reset" id="reset">Clear List</label>
+                </div>
+                <div>
+                    <label><input type="checkbox" data-ng-model="options.cheats" id="cheats"> Include Cheats</label><br />
+                </div>
+                <button type="button" data-ng-click="searchGames('search')">Search</button>
+            </div>
+        </div>
+        <div>
+            
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" ng-Click="togglePanel('filters')">Filter</div>
+            <div class="panel-body collapse" id="filters">
+                <label>Emulator:</label>
+                <div class="checkbox-inline">
+                    <label
+                      class="checkbox-inline"
+                      ng-repeat="emu in filter.emulators">
+                        <input type="checkbox" ng-model="emu.selected"/>{{emu.name}}
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="gameName">Name:</label>
+                    <input class="form-control" ng-model="search.name" id="gameName" />
+                </div>
+                <div class="form-group">
+                    <label for="playcount">Minimum Play Count:</label>
+                    <input type="number" class="form-control" ng-model="filter.minPlayCount" id="playcount" />
+                </div>
+            </div>
+        </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>
+                    <input id="checkAll" type="checkbox" data-ng-click="setSelected($event)" />
+                </td>
+                <td>
+                    <a style="cursor:pointer" ng-click="filter.sortType = 'name';filter.sortReverse = !sortReverse">
+                        Name
+                    </a>
+                </td>
+                <td>
+                    <a style="cursor:pointer" ng-click="filtr.sortType = 'emulator';filter.sortReverse = !sortReverse">
+                        Emulator
+                    </a>
+                </td>
+                <td>
+                    <a style="cursor:pointer" ng-click="filter.sortType = 'playcount';filter.sortReverse = !sortReverse">
+                        Play Count
+                    </a>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="game in games | filter:applyFilter | filter:search:strict | orderBy:sortType:sortReverse">
+                <td><input type="checkbox" ng-model="game.selected" /></td>
+                <td><a>{{ game.name }}</a></td>
+                <td>{{ game.emulator }}</td>
+                <td>{{ game.playcount }}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</div>

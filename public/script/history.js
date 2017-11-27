@@ -139,9 +139,4 @@ app.controller('HistoryController', function($scope, $http, $rootScope, $timeout
               }
            };
         }
-
-        //$scope.loadExecs();
-        //$scope.updateQue();
-        //$interval($scope.updateQue,10000);
-        //$interval($scope.updateQue,600000);
 });

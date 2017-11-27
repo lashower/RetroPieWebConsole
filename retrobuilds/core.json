@@ -1,0 +1,9 @@
+{
+    "name": "Core",
+    "description": "Core frameworks containing main applications for RetroPie to function",
+    "commands": ["fullInstall"], 
+    "emulators": [{
+        "name": "core",
+        "type": "group"
+    }]
+}

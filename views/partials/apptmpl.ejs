@@ -1,0 +1,33 @@
+<md-dialog aria-label="{{app.name}}" style="max-width: 80%;max-height: 80%;width: 80%;height: 80%;border-radius: 0;">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{app.name}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+            X
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-actions layout="row">
+        <label>Available Executions</label>
+        <md-button ng-repeat="func in app.functions" ng-click="action(func)">
+            {{func}}
+        </md-button>
+    </md-dialog-actions>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <p><label>Application:</label> {{app.name}}</p>
+        <p><label>Description:</label> {{app.description}}</p>
+        <p><label>Type:</label> {{app.type}}</p>
+        <p><label>Mod Type:</label> {{app.modType}}</p>
+        <p><label>License:</label> {{app.license}}</p>
+        <p><label>Help Info</label></p><p style="word-wrap:normal;white-space: pre-line">{{app.help}}</p>
+        <p><label>Installed:</label> {{app.installed}}</p>
+        <p><label>Release Date:</label> {{app.release_date | date: 'medium'}}</p>
+        <p><label>Last Update:</label> {{app.updated_at | date: 'medium'}}</p>
+        <p><label>GIT:</label> <a target="_blank" href="{{app.gitURL}}" ng-show="app.gitURL != ''">{{app.gitURL}}</a></p>
+    </md-dialog-content>
+  </form>
+</md-dialog>

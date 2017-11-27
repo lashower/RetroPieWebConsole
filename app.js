@@ -6,7 +6,9 @@ const RomUtil = require('./lib/RomUtil');
 const cron = require('node-cron');
 const logger = require('winston');
 const timeout = require('connect-timeout');
-
+const formidable = require('formidable');
+const fs = require('fs-extra');
+const path = require('path');
 app.use(timeout(1800000));
 
 RetroPieHelper.init().then(RetroPieHelper.updateCache)
@@ -30,22 +32,23 @@ app.get('/', function(req, res) {
 });
 
 app.get('/overview', function(req, res) {
-    console.log("Loading overview");
+    logger.debug("Loading overview");
     res.render('pages/overview');
 });
 
 app.get('/history', function(req, res) {
-    console.log("Loading history");
+    logger.debug("Loading history");
     res.render('pages/history');
 });
 
 app.get('/manage', function(req, res) {
-    console.log("Loading manage");
+    logger.debug("Loading manage");
     res.render('pages/manage');
 });
 
-app.get('/basic', function(req,res) {
-    res.render('pages/basic');
+app.get('/games', function(req, res) {
+    logger.debug("Loading manage");
+    res.render('pages/games');
 });
 
 app.get('/monitor', function(req,res) {
@@ -53,25 +56,33 @@ app.get('/monitor', function(req,res) {
 })
 
 app.get('/', function(req,res) {
-    console.log("Test");
+    logger.debug("Test");
 });
 
 app.get('/detail.tmpl.html',function(req,res) {
     res.render('partials/detailtmpl');
 });
 
+app.get('/build.tmpl.html',function(req,res) {
+    res.render('partials/buildtmpl');
+});
+
+app.get('/app.tmpl.html',function(req,res) {
+    res.render('partials/apptmpl');
+});
+
 app.get('/scriptUpdate',function(req,res) {
-    console.log("Getting Script Update");
+    logger.debug("Getting Script Update");
     res.render('pages/scriptUpdate');
 });
 
 app.get('/reboot',function(req,res) {
-    console.log("Getting Script Update");
+    logger.debug("Getting Script Update");
     res.render('pages/reboot');
 });
 
 app.get('/apps', function (req, res) {
-    console.log("Getting Apps");
+    logger.debug("Getting Apps");
     RetroPieHelper.getApps(req.query).then(result => {
         logger.silly('Result',result);
         res.json(result);
@@ -94,7 +105,7 @@ app.post('/execute', function(req, res) {
 });
 
 app.get('/getUserDetails', function(req,res) {
-    console.log('Getting user details');
+    logger.debug('Getting user details');
     RomUtil.getUserDetails().then(result => {
         result.rpsVersion = process.env.RPSVERSION;
         result.retroArchHome = process.env.RAHOME;
@@ -104,25 +115,32 @@ app.get('/getUserDetails', function(req,res) {
     });
 });
 
-//app.get('/getRomFolders', function(req,res) {
-//    RetroPieHelper.
-//});
+app.get('/getEmulators', function(req,res) {
+    logger.debug('Getting active emulators');
+    RomUtil.getEmulators().then(result => {
+        res.json(result);
+    }).catch(result => {
+        res.json(result);
+    });
+});
 
-//app.get('/filemanage', function(req,res) {
+app.get('/getRoms', function(req,res) {
+    logger.debug('Getting roms');
+    RomUtil.getRoms(req.query).then(result => {
+        res.json(result);
+    }).catch(result => {
+        res.json(result);
+    });
+});
 
-//});
-
-//app.post('/fileupload', function(req, res) {
-
-//});
 
 app.post('/updateScripts',function(req, res) {
-    console.log("Updating scripts");
+    logger.debug("Updating scripts");
     RetroPieHelper.updateScripts(req.query.webUpdate).then(result => {
-        console.log('success');
+        logger.debug('success');
         res.json(result)
     }).catch(err => {
-        console.log('failure',err);
+        logger.error('failure',err);
         res.json(err)}
     );
 });
@@ -155,9 +173,45 @@ app.get('/processStats',function(req,res) {
     });
 });
 
+app.get('/retrobuilds',function(req,res) {
+    RetroPieHelper.getBuilds(req.query).then(result => {
+        result.success = true;
+        res.json(result);
+    }).catch(err => {
+        result = {};
+        result.success = false;
+        result.err = err;
+        res.json(result);
+    });
+});
+
+app.post('/upload/game',function(req,res) {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        //logger.debug('err',err);
+        //logger.debug('fields',fields);
+        //logger.debug('emulator',fields.emulator);
+        //logger.debug('type',fields.type);
+        var file = files.file;
+        //logger.debug('file.size',file.size);
+        //logger.debug('file.path',file.path);
+        //logger.debug('file.name',file.name);
+        //logger.debug('file.type',file.type);
+        //logger.debug('file.lastModifiedDate',file.lastModifiedDate);
+        fs.chmod(file.path,755).then(() => {
+            fs.chown(file.path,Number(process.env.SUDO_UID),Number(process.env.SUDO_UID)).then(() => {
+                fs.rename(file.path, path.join('/', 'home', process.env.SUDO_USER, 'RetroPie', 'roms',fields.emulator,file.name)).then(() => {
+                    res.write("Success");
+                    res.end();
+                })
+            })
+        })
+    });
+});
+
 app.post('/performReboot',function(req, res) {
-    console.log("Rebooting system");
-    RetroPieHelper.performReboot(req.query).then(result => {res.json(result)}).catch(err => {res.json(err)});
+    logger.debug("Rebooting system");
+    RetroPieHelper.performReboot(req.query).then(result => { res.json(result)}).catch(err => {res.json(err)});
 });
 
 app.post('/updateExec',function(req,res) {

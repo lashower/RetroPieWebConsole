@@ -1,0 +1,9 @@
+{
+    "name": "Configurations",
+    "description": "Contains all the config tools for RetroPie",
+    "commands": ["fullInstall"],
+    "emulators": [{
+        "name": "config",
+        "type": "group"
+    }]
+}

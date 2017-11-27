@@ -2,7 +2,7 @@ app.controller('ScriptUpdateController', function($scope, $http, $rootScope, Upl
     $scope.sure = false;
     $scope.selfSure = false;
     $scope.disabled = false;
-    $scope.results = {};
+    $scope.results = [];
     $scope.runUpdate = function() {
         $scope.sure = false;
         $scope.disabled = true;
@@ -16,7 +16,7 @@ app.controller('ScriptUpdateController', function($scope, $http, $rootScope, Upl
         }).then(function(response) {
             $scope.disabled = false;
             $scope.results = response.data;
-            //console.log(response);
+            console.log($scope.results);
         });
     }
 });

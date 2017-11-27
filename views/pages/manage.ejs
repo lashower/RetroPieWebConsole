@@ -1,44 +1,23 @@
 <div data-ng-controller="ManageController">
     <section id="showcase">
         <div class="container">
-            <h1>Manage Packages</h1>
-            <p>This is the main page for managing your RetroPie Packages.</p>
+            <h1>Applications</h1>
+            <p>From here you can install and update RetroPie applications.</p>
         </div>
     </section>
-
     <div class="container">
         <div class="panel panel-default">
-            <div class="panel-heading">Filters</div>
-            <div class="panel-body">
-                <label>Type:</label>
-                <div class="checkbox-inline">
-                    <label class="checkbox-inline" ng-repeat="type in appTypes"><input type="checkbox" ng-model="filter[type]" value="{{type}}" />{{type}}</label>
-                </div><br />
-                <div class="form-group">
-                    <label for="appName">Name:</label>
-                    <input class="form-control" ng-model="search.name" id="appName" />
-                </div>
-                <div class="form-group">
-                    <label for="desc">Description:</label>
-                    <input class="form-control" ng-model="search.description" id="desc" />
-                </div>
-                <div>
-                <label>Installed:</label>
-                <label class="radio-inline"><input type="radio" ng-model="filter['installed']" value="all">All</label>
-                <label class="radio-inline"><input type="radio" ng-model="filter['installed']" value="are">Installed</label>
-                <label class="radio-inline"><input type="radio" ng-model="filter['installed']" value="not">Not Installed</label>
-                </div>
-                <div>
-                <label>Selected:</label>
-                <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="all">All</label>
-                <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="are">Selected</label>
-                <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="not">Not Selected</label>
-                </div>
+            <div class="panel-heading" ng-Click="togglePanel('builds')">Retro Bundles</div>
+            <div class="panel-body collapse in" id="builds">
+                Below is a list of existing application and game bundles for easy installation.
+                <ul class="list-inline">
+                    <li class="list-group-item" ng-repeat="build in builds"  ng-click="openBuild($event,build)">{{build.name}}</li>
+                </ul>
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading" ng-Click="togglePanel('actions')">Actions for selected</div>
-            <div class="panel-body collapse in" id="actions">
+            <div class="panel-heading" ng-Click="togglePanel('actions')">Manual Actions for selected</div>
+            <div class="panel-body collapse" id="actions">
                 <label for="priority">Priority</label>
                 <input class="form-control" type="number" ng-model="priority" id="priority" />
                 <button type="button" data-ng-click="runCommand('fullInstall')">Full Install/Update</button>
@@ -48,7 +27,7 @@
         <div class="panel-group">
             <div class="panel panel-default">
                 <div class="panel-heading" ng-Click="togglePanel('results')">Results</div>
-                <div id="results" class="collapse in">
+                <div id="results" class="collapse">
                     <div class="panel-body">
                         <div data-ng-repeat="exec in executions">
                             <label style="text-transform: capitalize;">{{exec.name}} {{exec.completed}}/{{exec.totalCount}}</label>
@@ -65,6 +44,40 @@
                 </div>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" ng-Click="togglePanel('filters')">Search</div>
+            <div class="panel-body collapse" id="filters">
+                <label>Type:</label>
+                <div class="checkbox-inline">
+                    <label class="checkbox-inline" ng-repeat="type in appTypes"><input type="checkbox" ng-model="filter[type]" value="{{type}}" />{{type}}</label>
+                </div><br />
+                <div class="form-group">
+                    <label for="appName">Name:</label>
+                    <input class="form-control" ng-model="search.name" id="appName" />
+                </div>
+                <div class="form-group">
+                    <label for="desc">Description:</label>
+                    <input class="form-control" ng-model="search.description" id="desc" />
+                </div>
+                <div>
+                    <label>Installed:</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['installed']" value="all">All</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['installed']" value="are">Installed</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['installed']" value="not">Not Installed</label>
+                </div>
+                <div>
+                    <label>Selected:</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="all">All</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="are">Selected</label>
+                    <label class="radio-inline"><input type="radio" ng-model="filter['selected']" value="not">Not Selected</label>
+                </div>
+                <div>
+                    <label for="showFunct">Show Functions:</label>
+                    <input ng-model="showFunctions" type="checkbox" id="showFunct"></input>
+                </div>
+            </div>
+        </div>
+
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -72,40 +85,34 @@
                     <input id="checkAll" type="checkbox" data-ng-click="setSelected($event)" />
                 </td>
                 <td>
-                    <a style="cursor:pointer" ng-click="sortType = 'name';sortReverse = !sortReverse">
+                    <a style="cursor:pointer" ng-click="filter.sortType = 'name';filter.sortReverse = !sortReverse">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a style="cursor:pointer" ng-click="sortType = 'type';sortReverse = !sortReverse">
+                    <a style="cursor:pointer" ng-click="filtr.sortType = 'type';filter.sortReverse = !sortReverse">
                         Type
                     </a>
                 </td>
                 <td>
-                    <a style="cursor:pointer" ng-click="sortType = 'description';sortReverse = !sortReverse">
+                    <a style="cursor:pointer" ng-click="filter.sortType = 'description';filter.sortReverse = !sortReverse">
                         Description
                     </a>
                 </td>
-                <td>
-                    <a style="cursor:pointer" ng-click="sortType = 'installed';sortReverse = !sortReverse">
-                        Installed
-                    </a>
-                </td>
-                <td>
-                    <a style="cursor:pointer" ng-click="sortType = 'functions';sortReverse = !sortReverse">
+                <td ng-show="showFunctions">
+                    <a style="cursor:pointer" ng-click="filtr.sortType = 'functions';filter.sortReverse = !sortReverse">
                         Functions
                     </a>
                 </td>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="app in (filteredItems = (searchedList | filter:applyFilter | filter:search:strict | orderBy:sortType:sortReverse))">
+            <tr ng-class="{success: app.installed}" ng-repeat="app in (filteredItems = (searchedList | filter:applyFilter | filter:search:strict | orderBy:sortType:sortReverse))">
                 <td><input type="checkbox" ng-model="app.selected" /></td>
-                <td>{{ app.name }}</td>
+                <td><a style="cursor:pointer" ng-click="openApp($event,app)">{{ app.name }}</a></td>
                 <td>{{ app.type }} {{ app.modType }}</td>
                 <td>{{ app.description }}</td>
-                <td>{{ app.installed ? "Yes" : "No" }}</td>
-                <td>{{ app.functions.join(', ') }}</td>
+                <td ng-show="showFunctions">{{ app.functions.join(', ') }}</td>
             </tr>
         </tbody>
     </table>
