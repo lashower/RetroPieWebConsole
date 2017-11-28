@@ -99,6 +99,7 @@
                         <tr>
                             <td></td>
                             <td>Name</td>
+                            <td>Command</td>
                             <td>CPU</td>
                             <td>PID</td>
                         </tr>
@@ -107,6 +108,7 @@
                         <tr ng-repeat="pid in detail.pids">
                             <td><a style="cursor:pointer" ng-click="killPID(pid.pid)">Kill</a></td>
                             <td>{{pid.name}}</td>
+                            <td>{{pid.cmd}}</td>
                             <td>{{pid.cpu}}%</td>
                             <td>{{pid.pid}}</td>
                         </tr>
