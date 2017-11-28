@@ -18,25 +18,7 @@ app.controller('ScriptUpdateController', function($scope, $http, $rootScope, Upl
             $scope.disabled = false;
             $scope.results = response.data;
             console.log($scope.results);
-            $scope.isUp = false;
-            while(!$scope.isUp)
-            {
-                setTimeout(function() { $scope.checkStatus()}, 5000);
-            }
         });
     }
 
-    $scope.checkStatus = function() {
-        $http({
-            transformRequest: angular.identity,
-            method: 'GET',
-            url: '/getUserDetails'
-        }).then(function(response) {
-            console.log(response);
-            $scope.isUp = true;
-        }).catch(function(err) {
-            console.log(err);
-            $scope.isUp = false;
-        });
-    }
 });
