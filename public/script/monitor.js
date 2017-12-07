@@ -6,6 +6,13 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
     $scope.sortReverse  = false;
     $scope.tempLabels = ['CPU','GPU'];
     $scope.tempData = [0,0];
+    $scope.pdFilter = {
+        cpu:0.2,
+        mem:0.2,
+        users:[{name:'pi',enable:true},{name:'root',enable:true}],
+        name:'emulation|retro',
+        command:'app.js|retro'
+    };
     
     $scope.result = {};
     
@@ -44,6 +51,24 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
         }).then(function(response) {
             console.log(response.data);
         });
+    }
+
+    $scope.filterPids = function(pid) {
+        var pass = true;
+        var userCheck = $scope.pdFilter.users.find(user => { return user.name == pid.user } );
+        if(userCheck == null)
+        {
+            $scope.pdFilter.push({name:pid.user,enable:false});
+            pass = false;
+        } else
+        {
+            pass = userCheck.enable;
+        }
+        pass = pass ? (pid.cpu >= $scope.pdFilter.cpu) : false;
+        pass = pass ? (pid.mem >= $scope.pdFilter.mem) : false;
+        pass = pass ? (pid.name.toLowerCase().search($scope.pdFilter.name) >= 0) : false;
+        pass = pass ? true : (pid.cmd.toLowerCase().search($scope.pdFilter.command) >= 0);
+        return pass;
     }
 
     $scope.getStats = function() {

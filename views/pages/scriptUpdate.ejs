@@ -23,7 +23,7 @@
                         <p><label>Directory:</label> {{result.dir}}</p>
                         <p><label>Success:</label> <span ng-class="{'list-group-item-success':result.success,'list-group-item-danger':!result.success}">
                             {{result.success}}</span></p>
-                        <p ng-if="!result.success"<label>Error:</label>{{result.error}}</p>
+                        <p ng-if="!result.success"><label>Error:</label>{{result.error}}</p>
                         <p><label>GIT:</label><a target="_blank" href="{{result.url}}">{{result.url}}</a></p>
                         <p><label>Branch:</label> {{result.branch}}</p>
                         <p><label>Last Update:</label> {{result.date}}</p>

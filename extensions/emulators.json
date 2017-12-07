@@ -1,0 +1,99 @@
+[
+  {
+    "name": "gba",
+    "aliases": [
+        {"source":"libretro-database","name":"Nintendo - Game Boy Advance"},
+        {"source":"thegamesdb.net","alias":"nintendo-gameboy-advance"}
+    ]
+  },
+  {
+    "name": "gbc",
+    "aliases": [
+        {"source":"libretro-database","name":"Nintendo - Game Boy Color"},
+        {"source":"thegamesdb.net","alias":"nintendo-gameboy-color"}
+    ]
+  },
+  {
+    "name": "gb",
+    "aliases": [
+        {"source":"libretro-database","name":"Nintendo - Game Boy"},
+        {"source":"thegamesdb.net","alias":"nintendo-gameboy"}
+    ]
+  },
+  {
+    "name": "n64",
+    "aliases": [
+        {"source":"libretro-database","name":"Nintendo - Nintendo 64"},
+        {"source":"thegamesdb.net","alias":"nintendo-gameboy-color"}
+    ]
+  },
+  {
+    "name": "nds",
+    "aliases": [
+        {"source":"libretro-database","name":"Nintendo - Nintendo DS"},
+        {"source":"thegamesdb.net","alias":"nintendo-3ds"}
+    ]
+  },
+  {
+    "name": "nes",
+    "aliases": [
+        {"source":"libretro-database","name":"Nintendo - Nintendo Entertainment System"},
+        {"source":"thegamesdb.net","alias":"nintendo-entertainment-system-nes"}
+    ]
+  },
+  {
+    "name": "snes",
+    "aliases": [
+        {"source":"libretro-database","name":"Nintendo - Super Nintendo Entertainment System"},
+        {"source":"thegamesdb.net","alias":"super-nintendo-snes"}
+    ]
+  },
+  {
+    "name": "gamegear",
+    "aliases": [
+        {"source":"libretro-database","name":"Sega - Game Gear"},
+        {"source":"thegamesdb.net","alias":"sega-game-gear"}
+    ]
+  },
+  {
+    "name": "mastersystem",
+    "aliases": [
+        {"source":"libretro-database","name":"Sega - Master System - Mark III"}
+    ]
+  },
+  {
+    "name": "megadrive",
+    "aliases": [
+        {"source":"libretro-database","name":"Sega - Mega Drive - Genesis"},
+        {"source":"thegamesdb.net","alias":"sega-mega-drive"}
+    ]
+  },
+  {
+    "name": "genesis",
+    "aliases": [
+        {"source":"libretro-database","name":"Sega - Mega Drive - Genesis"},
+        {"source":"thegamesdb.net","alias":"sega-genesis"}
+    ]
+  },
+  {
+    "name": "",
+    "aliases": [
+        {"source":"libretro-database","name":"Sega - Mega-CD - Sega CD"}
+    ]
+  },
+  {
+    "name": "saturn",
+    "aliases": [
+        {"source":"libretro-database","name":"Sega - Saturn"},
+        {"source":"thegamesdb.net","alias":"sega-saturn"}
+    ]
+  },
+  {
+    "name": "psx",
+    "aliases": [
+        {"source":"libretro-database","name":"Sony - PlayStation"},
+        {"source":"thegamesdb.net","alias":"sony-playstation"}
+    ]
+  }
+]
+

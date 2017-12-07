@@ -26,7 +26,6 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(express.static(__dirname + '/node_modules'));
 
-
 app.get('/', function(req, res) {
     res.render('pages/index');
 });
@@ -69,6 +68,10 @@ app.get('/build.tmpl.html',function(req,res) {
 
 app.get('/app.tmpl.html',function(req,res) {
     res.render('partials/apptmpl');
+});
+
+app.get('/game.tmpl.html',function(req,res) {
+    res.render('partials/gametmpl');
 });
 
 app.get('/scriptUpdate',function(req,res) {
@@ -161,6 +164,18 @@ app.get('/que',function(req,res) {
     });
 });
 
+app.get('/getImage',function(req,res) {
+    logger.debug(req.query);
+    res.sendFile(req.query.filename);
+});
+
+app.get('/downloadFile',function(req,res) {
+    logger.debug(req.query);
+    res.set('Content-Type','application/octet-stream');
+    const src = fs.createReadStream(req.query.filename);
+    src.pipe(res);
+});
+
 app.get('/processStats',function(req,res) {
     Monitor.getStats().then(result => {
         result.success = true;
@@ -188,19 +203,11 @@ app.get('/retrobuilds',function(req,res) {
 app.post('/upload/game',function(req,res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
-        //logger.debug('err',err);
-        //logger.debug('fields',fields);
-        //logger.debug('emulator',fields.emulator);
-        //logger.debug('type',fields.type);
         var file = files.file;
-        //logger.debug('file.size',file.size);
-        //logger.debug('file.path',file.path);
-        //logger.debug('file.name',file.name);
-        //logger.debug('file.type',file.type);
-        //logger.debug('file.lastModifiedDate',file.lastModifiedDate);
-        fs.chmod(file.path,755).then(() => {
+        var dir = JSON.parse(fields.emulator).path;
+        fs.chmod(file.path,777).then(() => {
             fs.chown(file.path,Number(process.env.SUDO_UID),Number(process.env.SUDO_UID)).then(() => {
-                fs.rename(file.path, path.join('/', 'home', process.env.SUDO_USER, 'RetroPie', 'roms',fields.emulator,file.name)).then(() => {
+                fs.rename(file.path, path.join(dir,file.name)).then(() => {
                     res.write("Success");
                     res.end();
                 })
@@ -220,6 +227,34 @@ app.post('/updateExec',function(req,res) {
     }).catch(err => {
         res.json(err);
     });
+});
+
+app.post('/updateAppCache',function(req,res) {
+    RetroPieHelper.updateCache().then((result) => {
+        res.json(result);
+    }).catch(err => {
+        res.json({success:false});
+    });
+});
+
+app.post('/updateGameInfo',function(req,res) {
+    if(req.query.game)
+    {
+        var game = JSON.parse(req.query.game);
+        RomUtil.updateGameInfo(game).then(result => { res.json({success:true}); });
+    } else
+    {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            var file = files.file;
+            logger.debug(file);
+            var game = JSON.parse(fields.game);
+            RomUtil.addGameImage(file,game).then((result) => {
+                game.image = result.fileName;
+                RomUtil.updateGameInfo(game).then(result => { res.json({success:true}); });
+            });
+        });
+    }
 });
 
 app.listen(3000);

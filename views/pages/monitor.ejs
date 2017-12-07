@@ -94,6 +94,27 @@
         <div class="panel panel-default">
             <div class="panel-heading">Application Stats</div>
             <div class="panel-body">
+                <label>User:</label>
+                <div class="checkbox-inline">
+                    <label class="checkbox-inline" ng-repeat="user in pdFilter.users"><input type="checkbox" ng-model="user.enable" value="{{user.name}}" />{{user.name}}</label>
+                </div><br />
+                <div class="form-group">
+                    <label for="pidName">Name:</label>
+                    <input class="form-control" ng-model="pdFilter.name" id="pidName" />
+                </div>
+                <div class="form-group">
+                    <label for="pidCmd">Command:</label>
+                    <input class="form-control" ng-model="pdFilter.command" id="pidCmd" />
+                </div>
+                <div class="form-group">
+                    <label>CPU Min</label>
+                    <input class="form-control" type="number" ng-model="pdFilter.cpu" />
+                </div> 
+                <div class="form-group">
+                    <label>Memory Min</label>
+                    <input class="form-control" type="number" ng-model="pdFilter.mem" />
+                </div>
+                    
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -101,15 +122,17 @@
                             <td>Name</td>
                             <td>Command</td>
                             <td>CPU</td>
+                            <td>Memory</td>
                             <td>PID</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="pid in detail.pids">
+                        <tr ng-repeat="pid in detail.pids | filter:filterPids">
                             <td><a style="cursor:pointer" ng-click="killPID(pid.pid)">Kill</a></td>
                             <td>{{pid.name}}</td>
                             <td>{{pid.cmd}}</td>
                             <td>{{pid.cpu}}%</td>
+                            <td>{{pid.mem}}%</td>
                             <td>{{pid.pid}}</td>
                         </tr>
                     </tbody>

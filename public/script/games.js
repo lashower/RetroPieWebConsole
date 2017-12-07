@@ -2,7 +2,7 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
         
         $scope.gameTypes = [];
         $scope.filter = {type:'name',reverse:false,name:'',selected:'all',emulators:[],minPlayCount:0};
-        $scope.options = {cheats:true,minPlayedGames:0,reset:true};
+        $scope.options = {cheats:true,reset:true};
         $scope.upload = {emulator:"",type:""}
         $scope.builds = [];
         $scope.games = [];
@@ -16,7 +16,7 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
         };
 
         $scope.uploadFiles = function (files) {
-            var emulator = $scope.upload.emulator;
+            var emulator = JSON.stringify($scope.upload.emulator);
             var type = $scope.upload.type;
             console.log($scope.upload.emulator);
             console.log($scope.upload.type);
@@ -34,7 +34,6 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
                         (evt) => { var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);}
                     );
                 }
-                //Upload.upload({..., data: {file: files}, ...})...;
             }
         }
 
@@ -91,20 +90,22 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
 
 
         /**
-         * * Displays details for a game.
-         * * @param ev The event object used for openning and closing.
-         * * @param game The game object containing details
-         * *                 like name, saves, states, and cheats.
-         * */
+         * Displays details for a game.
+         * @param ev The event object used for openning and closing.
+         * @param game The game object containing details
+         *                 like name, saves, states, and cheats.
+         **/
         $scope.openGame = function(ev,game) {
+            console.log(game);
+            game.emuObj = $scope.emulators.find(emu => { return emu.name == game.emulator });
             $mdDialog.show({
                 locals: {game:game},
                 controller: GameController,
                 templateUrl: '/game.tmpl.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                        clickOutsideToClose:true,
-                        fullscreen: true
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: true
             })
             .then(function(action) {
                 console.log(action);
@@ -119,7 +120,7 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
          *  @param ev The event object used for openning and closing.
          *  @param build The build object containing things like the name,
          *               description, emulators, and roms.
-         */
+         **/
         $scope.openBuild = function(ev,build) {
             console.log(build);
             $mdDialog.show({
@@ -164,14 +165,10 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
                 method: 'GET',
                 url: '/getEmulators'
             }).then(function(response) {
-                var fullGames = [];
-                $scope.emulators = response.data.map(emu => { 
-                    fullGames = fullGames.concat(emu.gameList);
+                $scope.emulators = response.data.map(emu => {
                     emu.selected = false;
                     return emu;
-                });
-                $scope.emulators.unshift({name:'All',selected:true,gameList:fullGames});
-                console.log($scope.emulators);
+                }).sort(function(a,b) {return (a.fullname > b.fullname) ? 1 : ((b.fullname > a.fullname) ? -1 : 0);} );
             });
         };
 
@@ -183,7 +180,6 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
             }
             var params = {};
             params.emulators = $scope.emulators.filter(emu => { return emu.selected == true });
-            console.log(params);
             $http({
                 transformRequest: angular.identity,
                 method: 'GET',
@@ -201,7 +197,11 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
                             var emuFilter = {name:emu[0].emulator,selected:true};
                             $scope.filter.emulators.push(emuFilter);
                         }
-                        emu.forEach(game => {$scope.games.push(game) });
+                        emu.forEach(game => {
+                            game.releasedate = game.releasedate ? new Date(Date.parse(game.releasedate)) : null;
+                            game.lastplayed = game.lastplayed ? new Date(Date.parse(game.lastplayed)) : null;
+                            $scope.games.push(game) 
+                        });
                     });
                 } else
                 {
@@ -222,19 +222,23 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
                             var lgame = $scope.games.find(g => {return g.name == game.name && g.emulator == game.emulator });
                             if(lgame == null)
                             {
+                                game.releasedate = game.releasedate ? new Date(Date.parse(game.releasedate)) : null;
+                                game.lastplayed = game.lastplayed ? new Date(Date.parse(game.lastplayed)) : null;
                                 $scope.games.push(game);
                             } else
                             {
                                 lgame.playCount = game.playCount;
                                 lgame.dirTree = game.dirTree;
                                 lgame.groupings = game.groupings;
-                                lgame.lastplayed = game.lastplayed;
+                                lgame.lastplayed = game.lastplayed ? new Date(Date.parse(game.lastplayed)) : null;
                                 lgame.memory = game.memory;
                                 lgame.playCount = game.playCount;
                                 lgame.states = game.states;
                                 lgame.cheats = game.cheats;
+                                lgame.releasedate = game.releasedate ? new Date(Date.parse(game.releasedate)) : null;
                             }
                         });
+                        console.log(emu);
                     });
                 }
                 console.log(response.data);
@@ -272,18 +276,59 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
          * @param build The build containing the name, description, and functions.
          * 
          **/
-        function GameController($scope, $mdDialog, game) {
+        function GameController($scope, $mdDialog, $http, Upload, game) {
             $scope.game = game;
+            $scope.selectedCheat = {};
+            $scope.edit = false;
+
+            $scope.toggleEdit = function() {
+                $scope.edit = !$scope.edit;
+            }
+
+            $scope.update = function() {
+                delete $scope.game['cheats'];
+                if($scope.game.uploadImage != null)
+                {
+                    console.log($scope.game.uploadImage);
+                    Upload.upload({
+                        url:'/updateGameInfo',
+                        data: {
+                            file: $scope.game.uploadImage,
+                            game: JSON.stringify($scope.game)
+                        }
+                    }).then((resp) => { console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);},
+                        (err) => {console.log('Error status: ' + resp.status);},
+                        (evt) => { var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);}
+                    );
+
+                } else
+                {
+                    $http({
+                        transformRequest: angular.identity,
+                        method: 'POST',
+                        url: '/updateGameInfo',
+                        params: {
+                            game: JSON.stringify($scope.game)
+                        }
+                    }).then(function(response) {
+                        console.log(response.data);
+                    });
+                }
+            }
+
+            $scope.filter = {sortType:'enable',sortReverse:false};
             $scope.hide = function() {
                 $mdDialog.hide();
             };
 
             $scope.cancel = function() {
+                console.log($scope.selectedCheat);
                 $mdDialog.cancel();
             };
 
             $scope.action = function(action) {
                 console.log(action);
+                console.log($scope.selectedCheat);
                 $mdDialog.hide(action);
             };
         }

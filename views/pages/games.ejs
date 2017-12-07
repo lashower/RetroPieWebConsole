@@ -40,7 +40,7 @@
                     <label
                       class="radio-inline"
                       ng-repeat="emu in emulators" ng-if="emu.name != 'All'">
-                        <input type="radio" ng-model="upload.emulator" value="{{emu.name}}">{{emu.name}}
+                        <input type="radio" ng-model="upload.emulator" ng-value="{{emu}}" />{{(emu.fullname == null || emu.fullname == '') ? emu.name : emu.fullname}}
                     </label>
                 </div>
                 <div>
@@ -54,7 +54,7 @@
                 </div>
                 <div ngf-drop="uploadFiles($files)" class="drop-box"
                   ngf-drag-over-class="dragover" ngf-multiple="true"
-                  ng-if="(upload.emulator != undefined && upload.emulator != '' && upload.type != undefined && upload.type != '')">Drop Files Here</div>
+                  ng-if="(upload.emulator != null && upload.type != null && upload.type != '')">Drop {{upload.emulator.extension}} Files Here</div>
                 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
             </div>
         </div>
@@ -65,31 +65,12 @@
                 <div class="checkbox-inline">
                     <label 
                       class="checkbox-inline" 
-                      ng-repeat="emu in emulators" 
-                      ng-if="emu.gameList.length >= options.minPlayedGames">
-                        <input type="checkbox" ng-model="emu.selected"/>{{emu.name}}
+                      ng-repeat="emu in emulators">
+                        <input type="checkbox" ng-model="emu.selected"/>{{(emu.fullname == null || emu.fullname == '') ? emu.name : emu.fullname}}
                     </label>
                 </div>
                 <div>
-                    <label for="playedGames">Minimum Played Games (Emulators)</label>
-                    <input class="form-control" type="number" ng-model="options.minPlayedGames" id="playedGames" />
-                </div>
-                <div>
-                    <label for="playCount">Minimum Play Count (Games)</label>
-                    <input class="form-control" type="number" ng-model="options.playCount" id="playCount" />
-                </div>
-                <div>
-                    <label for="minDate">Minimum Played Date:</label>
-                    <input
-                        type="datetime-local" id="minDate"
-                        name="input" ng-model="options.minDate"
-                        placeholder="yyyy-MM-ddTHH:mm:ss" />
-                </div>
-                <div>
                     <label><input type="checkbox" data-ng-model="options.reset" id="reset">Clear List</label>
-                </div>
-                <div>
-                    <label><input type="checkbox" data-ng-model="options.cheats" id="cheats"> Include Cheats</label><br />
                 </div>
                 <button type="button" data-ng-click="searchGames('search')">Search</button>
             </div>
@@ -118,7 +99,7 @@
                 </div>
             </div>
         </div>
-
+    <div><label>Total Games:</label> {{games.length}}</div>
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -145,7 +126,7 @@
         <tbody>
             <tr ng-repeat="game in games | filter:applyFilter | filter:search:strict | orderBy:sortType:sortReverse">
                 <td><input type="checkbox" ng-model="game.selected" /></td>
-                <td><a>{{ game.name }}</a></td>
+                <td><a style="cursor:pointer" ng-click="openGame($event,game)">{{ game.name }}</a></td>
                 <td>{{ game.emulator }}</td>
                 <td>{{ game.playcount }}</td>
             </tr>
@@ -153,3 +134,4 @@
     </table>
     </div>
 </div>
+    </md-dialog-content>
