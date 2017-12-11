@@ -162,6 +162,16 @@
                 </table>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Logs</div>
+            <div class="panel-body">
+                <ul>
+                    <li ng-repeat="log in logs">
+                        <a target="_self" ng-href="/downloadFile?filename={{log.path}}" download="{{log.name}}">{{log.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </section>
 

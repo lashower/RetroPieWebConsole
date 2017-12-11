@@ -188,6 +188,17 @@ app.get('/processStats',function(req,res) {
     });
 });
 
+app.get('/getLogs',function(req,res) {
+    Monitor.getLogs().then(result => {
+       res.json(result); 
+    }).catch(err => {
+        result = {};
+        result.success = false;
+        result.err = err;
+        res.json(result);
+    });
+});
+
 app.get('/retrobuilds',function(req,res) {
     RetroPieHelper.getBuilds(req.query).then(result => {
         result.success = true;

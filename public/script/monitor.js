@@ -6,6 +6,7 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
     $scope.sortReverse  = false;
     $scope.tempLabels = ['CPU','GPU'];
     $scope.tempData = [0,0];
+    $scope.logs = [];
     $scope.pdFilter = {
         cpu:0.2,
         mem:0.2,
@@ -15,7 +16,17 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
     };
     
     $scope.result = {};
-    
+
+    $scope.getLogs = function() {
+        $http({
+            transformRequest: angular.identity,
+            method: 'GET',
+            url: '/getLogs'
+        }).then(function(response) {
+            $scope.logs = response.data;
+        });
+    };
+     
     $scope.reboot = function(isContinue) {
         console.log('reboot');
         $scope.result = {};
@@ -117,6 +128,7 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
     };
     var reloadStats = $interval($scope.getStats,5000);
     $scope.getStats();
+    $scope.getLogs();
 
     $scope.$on("$destroy",function(){
         if(angular.isDefined(reloadStats)) {
