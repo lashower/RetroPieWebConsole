@@ -1,3 +1,7 @@
+if(process.env.SUDO_USER == 'root')
+{
+    process.env.SUDO_USER = 'pi';
+}
 const express = require('express');
 const app = express();
 const RetroPieHelper = require('./lib/RetroPieHelper');
@@ -266,6 +270,17 @@ app.post('/updateGameInfo',function(req,res) {
             });
         });
     }
+});
+
+app.post('/updateCheat',function(req,res) {
+    logger.debug(req.query.cheat);
+    RomUtil.updateCheat(JSON.parse(req.query.cheat)).then((result) => {
+        res.json({success:true});
+    }).catch((ex) => {
+        var result = {success:false};
+        result.error = ex;
+        res.json(result);
+    });
 });
 
 app.listen(3000);

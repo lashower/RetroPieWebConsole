@@ -316,6 +316,32 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
                 }
             }
 
+            $scope.saveCheat = function() {
+                $http({
+                    transformRequest: angular.identity,
+                    method: 'POST',
+                    url: '/updateCheat',
+                    params: {
+                        cheat: JSON.stringify($scope.selectedCheat)
+                    }
+                }).then(function(response) {
+                    console.log(response.data);
+                    if(response.data.success)
+                    {
+                        alert("Cheat updated successfully");
+                    }
+                });
+            };
+            
+            $scope.addCheatRow = function() {
+                $scope.selectedCheat.cheats.push({desc:'',code:'',enable:false});
+            };
+            
+            $scope.deleteCheat = function(cheat) {
+                var index = $scope.selectedCheat.cheats.indexOf(cheat);
+                $scope.selectedCheat.cheats.splice(index,1);
+            };
+
             $scope.filter = {sortType:'enable',sortReverse:false};
             $scope.hide = function() {
                 $mdDialog.hide();
