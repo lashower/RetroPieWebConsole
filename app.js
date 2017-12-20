@@ -1,7 +1,4 @@
-if(process.env.SUDO_USER == 'root')
-{
-    process.env.SUDO_USER = 'pi';
-}
+const Settings = require('./lib/Settings');
 const express = require('express');
 const app = express();
 const RetroPieHelper = require('./lib/RetroPieHelper');
@@ -50,16 +47,18 @@ app.get('/manage', function(req, res) {
 });
 
 app.get('/games', function(req, res) {
-    logger.debug("Loading manage");
+    logger.debug("Loading games");
     res.render('pages/games');
 });
 
 app.get('/monitor', function(req,res) {
+    logger.debug("Loading monitoring");
     res.render('pages/monitor');
 })
 
-app.get('/', function(req,res) {
-    logger.debug("Test");
+app.get('/settings', function(req,res) {
+    logger.debug("Loading settings");
+    res.render('pages/settings');
 });
 
 app.get('/detail.tmpl.html',function(req,res) {
@@ -81,11 +80,6 @@ app.get('/game.tmpl.html',function(req,res) {
 app.get('/scriptUpdate',function(req,res) {
     logger.debug("Getting Script Update");
     res.render('pages/scriptUpdate');
-});
-
-app.get('/reboot',function(req,res) {
-    logger.debug("Getting Script Update");
-    res.render('pages/reboot');
 });
 
 app.get('/apps', function (req, res) {
@@ -113,12 +107,35 @@ app.post('/execute', function(req, res) {
 
 app.get('/getUserDetails', function(req,res) {
     logger.debug('Getting user details');
-    RomUtil.getUserDetails().then(result => {
+    Settings.getUserDetails().then(result => {
         result.rpsVersion = process.env.RPSVERSION;
         result.retroArchHome = process.env.RAHOME;
         res.json(result);
     }).catch(result => {
         res.json(result);
+    });
+});
+
+app.get('/rest/v1/get/settings', function(req,res) {
+    logger.debug('app','Getting Settings');
+    Settings.getSettings().then(result => {
+       res.json(result)
+    }).catch(err => {
+        var result = {message:'Failed to load settings'};
+        result.error = err;
+        res.json(err);
+    }); 
+});
+
+app.post('/rest/v1/put/settings', function(req,res) {
+    logger.debug('app',"Updating settings");
+    logger.debug('app',req.query.settings);
+    Settings.updateSettings(JSON.parse(req.query.settings)).then(result => {
+        res.json(result);
+    }).catch(err => {
+        var result = {message:'Failed to update settings'};
+        result.error = err;
+        res.json(err);
     });
 });
 

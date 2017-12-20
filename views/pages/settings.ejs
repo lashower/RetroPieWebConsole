@@ -1,0 +1,108 @@
+<div data-ng-controller="SettingController">
+    <section id="showcase">
+        <div class="container">
+            <h1>Settings</h1>
+            <p>This page allows you to override default settings used by RetroPie Web Console.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">Basic</div>
+            <div class="panel-body">
+                <div>
+                    <button type="button" data-ng-click="save()">Save</button>
+                </div>
+                <div>
+                    <label><input type="checkbox" ng-model="linkChanges" /> Link Changes (When you update user/folders, child folders are updated as well)</label>
+                <div>
+                    <label><input type="checkbox" ng-model="settings.INCLUDE_EXTRA.value" /> Include RetroPie-Extra</label>
+                </div>
+                <div>
+                    <label>Current User:</label> <input type="text" ng-change="updateChildren('{{settings.CURRENT_USER.value}}',settings.CURRENT_USER)" ng-model="settings.CURRENT_USER.value" />
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Directories</div>
+            <div class="panel-body">
+                <div>
+                    <label>RetroPie-Setup:</label>
+                    <input type="text" 
+                           ng-model="settings.RPSHOME.value" 
+                            ng-class="{'list-group-item-success':settings.RPSHOME.exists,'list-group-item-danger':!settings.RPSHOME.exists}" />
+                </div>
+                <div>
+                    <label>User Home:</label> 
+                    <input type="text" 
+                           ng-change="updateChildren('{{settings.USER_HOME.value}}',settings.USER_HOME)" 
+                            ng-model="settings.USER_HOME.value" 
+                            ng-class="{'list-group-item-success':settings.USER_HOME.exists,'list-group-item-danger':!settings.USER_HOME.exists}" />
+                </div>
+                <div>
+                    <label>Data Home:</label>
+                    <input type="text" 
+                           ng-change="updateChildren('{{settings.DATA_DIRECTORY.value}}',settings.DATA_DIRECTORY)" 
+                           ng-model="settings.DATA_DIRECTORY.value" 
+                           ng-class="{'list-group-item-success':settings.DATA_DIRECTORY.exists,'list-group-item-danger':!settings.DATA_DIRECTORY.exists}" />
+                </div>
+                <div>
+                    <label>ROM:</label>
+                    <input type="text" 
+                           ng-model="settings.ROM_DIRECTORY.value" 
+                           ng-class="{'list-group-item-success':settings.ROM_DIRECTORY.exists,'list-group-item-danger':!settings.ROM_DIRECTORY.exists}" />
+                </div>
+                <div>
+                    <label>BIOS:</label>
+                    <input type="text" 
+                           ng-model="settings.BIOS_DIRECTORY.value" 
+                           ng-class="{'list-group-item-success':settings.BIOS_DIRECTORY.exists,'list-group-item-danger':!settings.BIOS_DIRECTORY.exists}" />
+                </div>
+                <div>
+                    <label>Emulation Station:</label>
+                    <input type="text" 
+                           ng-model="settings.EMULATION_HOME.value" 
+                           ng-class="{'list-group-item-success':settings.EMULATION_HOME.exists,'list-group-item-danger':!settings.EMULATION_HOME.exists}"  />
+                </div>
+                <div>
+                    <label>Cheats:</label> 
+                    <input type="text" 
+                           ng-model="settings.CHEAT_DIR.value" 
+                           ng-class="{'list-group-item-success':settings.CHEAT_DIR.exists,'list-group-item-danger':!settings.CHEAT_DIR.exists}" />
+                </div>
+                <div>
+                    <label>RetroArch Home:</label> 
+                    <input type="text" 
+                           ng-change="'{{settings.RETROARCH_HOME.value}}',updateChildren(settings.RETROARCH_HOME)" 
+                           ng-model="settings.RETROARCH_HOME.value" 
+                           ng-class="{'list-group-item-success':settings.RETROARCH_HOME.exists,'list-group-item-danger':!settings.RETROARCH_HOME.exists}" />
+                </div>
+                <div>
+                    <label>Emulators Home:</label>
+                    <input type="text" 
+                           ng-model="settings.EMU_DIRECTORY.value" 
+                           ng-class="{'list-group-item-success':settings.EMU_DIRECTORY.exists,'list-group-item-danger':!settings.EMU_DIRECTORY.exists}" />
+                </div>
+                <div>
+                    <label>Config Home:</label>
+                    <input type="text" 
+                           ng-model="settings.CONFIG_DIRECTORY.value" 
+                           ng-class="{'list-group-item-success':settings.CONFIG_DIRECTORY.exists,'list-group-item-danger':!settings.CONFIG_DIRECTORY.exists}" />
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">URLs</div>
+            <div class="panel-body">
+                <div>
+                    <label>RetroPie-Setup GIT:</label> <input type="text" ng-model="settings.RPS_GIT.value" />
+                </div>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <label>RetroPie-Extra GIT:</label> <input type="text" ng-model="settings.RP_EXTRA_GIT.value" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

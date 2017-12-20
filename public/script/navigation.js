@@ -41,11 +41,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl : 'games'
     }
 
+    var settingsState = {
+        name: 'settings',
+        url: '/settings',
+        controller: 'SettingController',
+        templateUrl : 'settings'
+    }
+
 	$stateProvider.state(overviewState);
 	$stateProvider.state(manageState);
     $stateProvider.state(gamesState);
 	$stateProvider.state(sUpdateState);
     $stateProvider.state(historyState);
     $stateProvider.state(monitorState);
+    $stateProvider.state(settingsState);
 	$urlRouterProvider.otherwise('/overview')
 });
