@@ -12,7 +12,9 @@ const fs = require('fs-extra');
 const path = require('path');
 app.use(timeout(1800000));
 
-RetroPieHelper.init().then(RetroPieHelper.updateCache)
+RetroPieHelper.init().then(RetroPieHelper.updateCache.bind(null)).catch(() => {
+    logger.debug('Failed to start');
+});
 
 setInterval(RetroPieHelper.updateCache,300000);
 
