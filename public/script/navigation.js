@@ -48,6 +48,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl : 'settings'
     }
 
+    var streamingState = {
+        name: 'streaming',
+        url: '/streaming',
+        controller: 'StreamingController',
+        templateUrl : 'streaming'
+    }
+
 	$stateProvider.state(overviewState);
 	$stateProvider.state(manageState);
     $stateProvider.state(gamesState);
@@ -55,5 +62,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state(historyState);
     $stateProvider.state(monitorState);
     $stateProvider.state(settingsState);
+    $stateProvider.state(streamingState);
 	$urlRouterProvider.otherwise('/overview')
 });

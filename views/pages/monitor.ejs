@@ -165,11 +165,14 @@
         <div class="panel panel-default">
             <div class="panel-heading">Logs</div>
             <div class="panel-body">
-                <ul>
-                    <li ng-repeat="log in logs">
-                        <a target="_self" ng-href="/downloadFile?filename={{log.path}}" download="{{log.name}}">{{log.name}}</a>
-                    </li>
-                </ul>
+                <button ng-model="button" data-ng-click="getLogs()">Refresh</button>                
+                <div ng-repeat="log in logs">
+                    <label>
+                        <input type="checkbox" ng-model="log.enabled" />
+                        <a target="_self" ng-href="/downloadFile?filename={{log.path}}" download="{{log.name}}">{{log.name}}</a><br />
+                    </label>
+                    <textarea ng-if="log.enabled" ng-model="log.text" style="margin:auto;width:100%;height:150px;"></textarea>
+                </div>
             </div>
         </div>
     </div>

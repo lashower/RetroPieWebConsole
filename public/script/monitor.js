@@ -23,7 +23,29 @@ app.controller('MonitorController', function($scope, $http, $rootScope, Upload, 
             method: 'GET',
             url: '/getLogs'
         }).then(function(response) {
-            $scope.logs = response.data;
+            //console.log(response.data);
+            response.data.forEach(log => {
+                if($scope.logs.find((item) => { return item.name == log.name }) == null)
+                {
+                    log.enabled = false;
+                    $scope.logs.push(log);
+                }
+            });
+            //$scope.logs = response.data.map(log => { log.enabled = false; return log });
+        });
+        $scope.logs.forEach(log => {
+            if(log.enabled) {
+                $http({
+                    transformRequest: angular.identity,
+                    method: 'GET',
+                    url: '/readFile',
+                        params: {
+                            filename: log.path
+                        }
+                }).then(function(response) {
+                    log.text = response.data;
+                });
+            }
         });
     };
      

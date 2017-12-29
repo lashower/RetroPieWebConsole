@@ -1,7 +1,8 @@
-app.controller('OverviewController', function($scope, $http, $rootScope, Upload, $timeout) {
+app.controller('OverviewController', function($scope, $http, $rootScope, $interval) {
         
     $scope.status = "";
     $scope.userDetails = {};
+    $scope.screenURL = "/getScreenshot?height=400";
 
     $scope.getUserDetails = function() {
         $scope.result = {};
@@ -14,6 +15,19 @@ app.controller('OverviewController', function($scope, $http, $rootScope, Upload,
             //console.log($scope.userDetails);
         });
     }
+
+    $scope.getScreen = function() {
+        $scope.screenURL = "/getScreenshot?height=400&r=" + Date.now();
+    }
+
+
+    var reloadScreen = $interval($scope.getScreen,5000);
     $scope.getUserDetails();
+
+    $scope.$on("$destroy",function(){
+        if(angular.isDefined(reloadScreen)) {
+            $interval.cancel(reloadScreen);
+        }
+    });
 
 });

@@ -32,6 +32,8 @@ fi
 echo "Installing basic packages"
 sudo apt-get -y install gcc make libssl-dev libcurl4-openssl-dev
 
+curl -sL https://raw.githubusercontent.com/lashower/raspi2png/master/installer.sh | bash -
+
 pm2=$(which pm2)
 if [ "${pm2}" == "" ]; then
     echo "Installing PM2"
@@ -73,6 +75,7 @@ fi
 
 chmod -R 777 $HOME/nodejs/RetroPieWebConsole/install.sh 
 chmod -R 777 $HOME/nodejs/RetroPieWebConsole/updater.sh
+
 IP="$(ip route get 1 | awk '{print $NF;exit}')";
 echo ""
 echo "##########################################################"

@@ -1,0 +1,21 @@
+<section id="showcase">
+    <div class="container">
+       <div class="panel panel-default">
+            <div class="panel-heading">Video Settings</div>
+            <div class="panel-body">
+                <label for="refreshInterval">Refresh Time (milliseconds)</label>
+                <input type="number" class="form-control" id="refreshInterval" ng-model="refreshInterval" ng-blur="updateInterval()" />
+                <label for="videoWidth">Width</label>
+                <input type="number" class="form-control" id="videoWidth" ng-model="videoWidth" />
+                <label for="videoHeight">Height</label>
+                <input type="number" class="form-control" id="videoHeight" ng-model="videoHeight" />
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <img ng-src="{{screenURL}}" alt="screenshot"></img>
+            </div>
+        </div>
+    </div>
+</section>
+

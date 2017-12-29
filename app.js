@@ -63,6 +63,10 @@ app.get('/settings', function(req,res) {
     res.render('pages/settings');
 });
 
+app.get('/streaming', function(req,res) {
+    res.render('pages/streaming');
+});
+
 app.get('/detail.tmpl.html',function(req,res) {
     res.render('partials/detailtmpl');
 });
@@ -199,6 +203,12 @@ app.get('/downloadFile',function(req,res) {
     src.pipe(res);
 });
 
+app.get('/readFile',function(req,res) {
+    fs.readFile(req.query.filename).then(result => {
+        res.send(result);
+    });
+});
+
 app.get('/processStats',function(req,res) {
     Monitor.getStats().then(result => {
         result.success = true;
@@ -219,6 +229,14 @@ app.get('/getLogs',function(req,res) {
         result.success = false;
         result.err = err;
         res.json(result);
+    });
+});
+
+app.get('/getScreenshot',function(req,res) {
+    res.set('Content-Type','image/png');
+    Monitor.getScreenShot(req.query,res).then(() => {
+    }).catch(err => {
+        logger.error("Unable to get screenshot");
     });
 });
 
