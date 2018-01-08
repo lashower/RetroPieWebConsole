@@ -18,16 +18,21 @@ app.controller('GameController',function($scope, $http, $rootScope, $interval, $
         $scope.uploadFiles = function (files) {
             var emulator = JSON.stringify($scope.upload.emulator);
             var type = $scope.upload.type;
-            console.log($scope.upload.emulator);
-            console.log($scope.upload.type);
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
+                    var fileData = {
+                        lastModified: files[i].lastModified,
+                        path: files[i].path,
+                        size: files[i].size,
+                        type: files[i].type
+                    }
                     Upload.upload({
                         url:'upload/game',
                         data: {
                             file: files[i],
                             emulator: emulator,
-                            type: type
+                            type: type,
+                            fileData: JSON.stringify(fileData)
                         }
                     }).then((resp) => { console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);},
                         (err) => {console.log('Error status: ' + resp.status);},

@@ -256,15 +256,31 @@ app.post('/upload/game',function(req,res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var file = files.file;
-        var dir = JSON.parse(fields.emulator).path;
+        var emulator = JSON.parse(fields.emulator);
+        var fileData = JSON.parse(fields.fileData);
+        RomUtil.addGame(file,emulator,fileData).then(() => {
+            res.write("Success");
+            res.end();
+        });
+        /*if(fileData.path)
+        {
+            console.log("path.dirname",fileData.path,path.dirname(fileData.path));
+            dir = path.join(dir,path.dirname(fileData.path));
+        }
         fs.chmod(file.path,777).then(() => {
             fs.chown(file.path,Number(process.env.SUDO_UID),Number(process.env.SUDO_UID)).then(() => {
-                fs.rename(file.path, path.join(dir,file.name)).then(() => {
-                    res.write("Success");
-                    res.end();
+                fs.ensureDir(dir).then(() => {
+                    fs.chmod(dir,777).then(() => {
+                        fs.chown(file.path,Number(process.env.SUDO_UID),Number(process.env.SUDO_UID)).then(() => {
+                            fs.rename(file.path, path.join(dir,file.name)).then(() => {
+                                res.write("Success");
+                                res.end();
+                            })
+                        });
+                    })
                 })
             })
-        })
+        })*/
     });
 });
 
